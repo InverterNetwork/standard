@@ -2,6 +2,8 @@
 
 Version 1.0.0-beta - Last Changed: 2024-12-06
 
+The Inverter Standard is a comprehensive set of guidelines for developing software within the Inverter Network. This standard aims to ensure consistent code quality, security, and maintainability across all projects. For now, it is focused on Solidity smart contracts, but will be expanded to cover all aspects of development in the future.
+
 ## Table of Contents
 1. [Introduction](#1-introduction)
    - [Purpose](#purpose)
@@ -12,51 +14,29 @@ Version 1.0.0-beta - Last Changed: 2024-12-06
    - [Code Quality](#code-quality)
    - [Security First](#security-first)
    - [Documentation Requirements](#documentation-requirements)
-   - [Testing Requirements](#testing-requirements)
+   - Testing Requirements
 
-3. [Smart Contract Standards](#3-smart-contract-standards)
+3. [Smart Contract Layout](#3-smart-contract-layout)
    - [File Organization](#file-organization)
      - [Directory Structure](#directory-structure)
      - [File Naming](#file-naming)
      - [File Structure](#file-structure)
 
-4. Solidity Specific Guidelines
-   - Version Pragma
-   - Imports
-   - Gas Optimization
-   - Memory vs Storage
-   - Type Safety
-   - Common Patterns
+4. Smart Contract Guidelines
 
-5. Testing Standards
-   - Test Structure
-   - Coverage Requirements
-   - Test Naming
-   - Mocking and Fixtures
+5. [Smart Contract Testing](#5-smart-contract-testing)
+   - [Coverage Requirements](#coverage-requirements)
+   - [Test Types](#test-types)
+   - [Test Naming & Quality](#test-naming--quality)
+   - [Test Structure](#test-structure)
 
 6. Documentation Standards
-   - NatSpec Requirements
-   - README Standards
-   - Inline Comments
-   - Architecture Documentation
 
 7. Git Standards
-   - Branch Naming
-   - Commit Messages
-   - PR Process
-   - Review Requirements
 
 8. Development Process
-   - Local Development
-   - CI/CD Requirements
-   - Deployment Process
-   - Auditing Requirements
 
 9. Tools and Environment
-   - Required Tools
-   - Linting Rules
-   - Formatter Settings
-   - IDE Recommendations
 
 10. Appendix
     - Templates
@@ -166,69 +146,6 @@ While initially focused on Solidity smart contracts, these standards provide a f
   - Known issues and workarounds
   - Future improvement plans
   - Deprecation notices when applicable
-
-### Testing Requirements
-- **Coverage Requirements**
-  - Minimum 90% code coverage for all contracts
-  - 100% coverage for critical functions and contracts
-  - All state transitions must be tested
-  - Edge cases must be explicitly tested
-
-- **Test Types**
-  - Unit tests for individual functions
-    - Cover the positive and negative paths
-    - Use fuzz testing where possible
-  - Integration tests for contract interactions
-    - If external protocols are used, they should be mocked for unit tests and tested via fork testing in integration tests
-  - Invariant testing will be introduced in the future and required for critical contracts first
-
-- **Test Naming & Quality**
-  - Tests must be readable and maintainable
-  - Each test should have a clear purpose
-  - Use Gherkin notation for test documentation and naming
-  
-  #### Gherkin Documentation
-  - All test files must start with Gherkin-style documentation that explicitly lists:
-    - The requirements of each function
-    - All possible execution paths
-    - Expected outcomes
-  
-  Example:
-  ```solidity
-  /* Test _processProtocolFeeViaMinting() function
-      ├── Given the fee amount > 0
-      │   └── And the treasury address is invalid
-      │       └── When the function _processProtocolFeeViaMinting() is called
-      │           └── Then the transaction should revert
-  */
-  ```
-
-  #### Test Naming Convention
-  - Test names should follow the Gherkin structure in camelCase:
-    - Format: `test[Visibility][FunctionName]_[outcome]Given[condition]`
-    - Visibility: Internal/External/Public
-    - Outcome: succeeds/fails/reverts
-  
-  Examples:
-  ```solidity
-  // Basic test
-  testInternalProcessProtocolFeeViaMinting_failsGivenTreasuryAddressInvalid()
-  
-  // Multiple conditions
-  testExternalDeposit_succeedsGivenValidAmountAndApprovedToken()
-  
-  // State-dependent test
-  testPublicWithdraw_revertsGivenInsufficientBalance()
-  ```
-
-  #### Test Structure Requirements
-  - Each Gherkin path must be covered by at least one test
-  - Tests should be organized in the same order as the Gherkin documentation
-  - Complex functions may require multiple tests per path to cover edge cases
-  - Group related tests together using describe block
-
-
-
 
 ## 3. Smart Contract Standards
 
@@ -432,3 +349,63 @@ src/
         // Implementation
     }
     ```
+
+## 5. Smart Contract Testing
+- **Coverage Requirements**
+  - Minimum 90% code coverage for all contracts
+  - 100% coverage for critical functions and contracts
+  - All state transitions must be tested
+  - Edge cases must be explicitly tested
+
+- **Test Types**
+  - Unit tests for individual functions
+    - Cover the positive and negative paths
+    - Use fuzz testing where possible
+  - Integration tests for contract interactions
+    - If external protocols are used, they should be mocked for unit tests and tested via fork testing in integration tests
+  - Invariant testing will be introduced in the future and required for critical contracts first
+
+- **Test Naming & Quality**
+  - Tests must be readable and maintainable
+  - Each test should have a clear purpose
+  - Use Gherkin notation for test documentation and naming
+  
+  #### Gherkin Documentation
+  - All test files must start with Gherkin-style documentation that explicitly lists:
+    - The requirements of each function
+    - All possible execution paths
+    - Expected outcomes
+  
+  Example:
+  ```solidity
+  /* Test _processProtocolFeeViaMinting() function
+      ├── Given the fee amount > 0
+      │   └── And the treasury address is invalid
+      │       └── When the function _processProtocolFeeViaMinting() is called
+      │           └── Then the transaction should revert
+  */
+  ```
+
+  #### Test Naming Convention
+  - Test names should follow the Gherkin structure in camelCase:
+    - Format: `test[Visibility][FunctionName]_[outcome]Given[condition]`
+    - Visibility: Internal/External/Public
+    - Outcome: succeeds/fails/reverts
+  
+  Examples:
+  ```solidity
+  // Basic test
+  testInternalProcessProtocolFeeViaMinting_failsGivenTreasuryAddressInvalid()
+  
+  // Multiple conditions
+  testExternalDeposit_succeedsGivenValidAmountAndApprovedToken()
+  
+  // State-dependent test
+  testPublicWithdraw_revertsGivenInsufficientBalance()
+  ```
+
+  #### Test Structure Requirements
+  - Each Gherkin path must be covered by at least one test
+  - Tests should be organized in the same order as the Gherkin documentation
+  - Complex functions may require multiple tests per path to cover edge cases
+  - Group related tests together using describe block
