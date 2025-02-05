@@ -1,6 +1,6 @@
 # Inverter Protocol Security
 
-**Version 1.0.0-beta** · Last Updated: 2025-02-04
+**Version 1.1.0-beta** · Last Updated: 2025-02-04
 
 ## Table of Contents
 1. [Architecture Principles](#1-architecture-principles)
