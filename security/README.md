@@ -201,7 +201,7 @@ While not currently certified, we align our security practices with leading stan
   Regular external testing aligned with Open Web Application Security Project (OWASP) Top 10 and Cloud Security Alliance (CSA) guidelines
 
 - **Information Security Management:**  
-  ISO 27001 controls framework for establishing/maintaining information security management systems
+  ISO 27001 control framework for establishing/maintaining information security management systems
 
 - **Cloud Security Specifics:**  
   ISO 27017 code of practice for information security controls in cloud services
@@ -238,8 +238,8 @@ Now that we understand how many attack vectors can be enabled by introducing jus
   - Tornado Cash Hack
   - Wormhole attacker counter-hack (upgradable Oasis contracts)
 
-- **Audited contracts**: We must ensure that any and all dependency that is added to the Inverter has been audited by at least 2 well-reputed audit houses (or independent auditors) with public audit reports confirming that all the issues found in the audit have been fixed by the team.
-  - It is not enough to only check for the presence of audit reports and be done with it. Oftentimes, the auditors point out pathways through which the protocol can go in a state that would not be too desirable for a user and since this is not exactly a security bug, the protocol dismisses it by labeling that as a design decision. So, it is important to actually weave through the audit reports and be aware of such edge cases or gotchas in all of the dependencies being introduced to Inverter.
+- **Audited contracts**: We must ensure that any dependency added to the Inverter has been audited by at least two well-reputed audit houses (or independent auditors), with public audit reports confirming that the team has fixed all the issues found in the audit.
+  - It is not enough to check for the presence of audit reports and be done with it. Often, the auditors point out pathways through which the protocol can become undesirable for a user. Since this is not exactly a security bug, the protocol dismisses it by labeling it a design decision. So, it is important to actually weave through the audit reports and be aware of such edge cases or gotchas in all of the dependencies being introduced to Inverter.
 
 - **Top-Notch Testing Suite**: The testing suite of the protocol that we intend to incorporate should be held to at least the same standards that we hold our testing to. Their testing suite should include fuzz tests, invariant tests, unit tests, integration tests, mutation tests, maximal test coverage, and a list of all the scenarios that are tested in plain English.
 
@@ -260,7 +260,7 @@ Now that we understand how many attack vectors can be enabled by introducing jus
 ### 4.3 Due Diligence on Potential Dependencies
 The decision of integrating a particular dependency into the Inverter should never be taken lightly and the Inverter team must conduct their own due diligence on the project that is potentially going to be integrated into the Inverter as a dependency.
 This due diligence should focus heavily on threat modeling for the potential dependency, thoroughly reviewing the security audit reports for the dependency, and conducting Inverter's own security review.
-With our extensive research on threat modeling of protocols, we came across Composable Security's threat modeling of integrating with Uniswap v4, and we opine that in the future, Inverter developers/security researchers can follow the same format for carrying out their own threat modeling of a particular protocol. The report can be found here.
+During our extensive research on protocol threat modeling, we came across Composable Security's threat modeling for integrating with Uniswap v4. We opine that in the future, Inverter developers/security researchers can follow the same format for carrying out their own threat modeling of a particular protocol. The report can be found here.
 Additionally, here are a few resources on integration checklists for various famous DeFi protocols, which have been kindly published into the public domain by helpful web3 security collaborators.
 - [**Aave v3**](https://blog.pessimistic.io/aave-v3-defi-integration-tips-54089749cd4a)
 - [**Convex Finance**](https://blog.pessimistic.io/convex-finance-defi-integration-tips-1bacfe73d3ce)
@@ -314,16 +314,16 @@ The protocol should include a public and easily accessible GitHub repository (or
 
 For example, this repository should clearly state how many audits the protocol has gone through, at what stages, and by which audit houses. The audit reports from each of the audits should be publicly accessible. 
 
-The repository should contain the e-mail addresses of the relevant team members from the Inverter Network who would act as the first responders to any report of security breaches. The team members' email addresses should be accompanied by their PGP keys so that all communication between the whitehat and the protocol happens through an encrypted channel.
+The repository should contain the e-mail addresses of the relevant team members from the Inverter Network, who would act as the first responders to any security breach report. The team members' email addresses should be accompanied by their PGP keys so that all communication between the whitehat and the protocol happens through an encrypted channel.
 
-The contact details for the Inverter Network team should be present in their own repository and on platforms that aggregate the contact information for different DeFi projects, such as [OpenZeppelin’s Smart Contract Security Registry](https://blog.openzeppelin.com/smart-contract-security-registry) or [Blockchain Security Contacts](https://github.com/crytic/blockchain-security-contacts).
+The Inverter Network team's contact details should be in their own repository and on platforms that aggregate the contact information for different DeFi projects, such as [OpenZeppelin’s Smart Contract Security Registry](https://blog.openzeppelin.com/smart-contract-security-registry) or [Blockchain Security Contacts](https://github.com/crytic/blockchain-security-contacts).
 
 
 ### 5.2 The Emergency Protocol
 
 - Bug or vulnerability that puts users' funds at risk is discovered in your protocol's smart contracts 
 - Bug or vulnerability that puts users' funds at risk is discovered in an underlying protocol (which your dApp utilizes) 
-- Bug or vulnerability is discovered in third-party infrastructure and tooling used previously or currently. Examples include oracles, wallet address generators, bridges, multisig wallets, programming languages, and more. 
+- Bug or vulnerability is discovered in third-party infrastructure and/or tooling used previously or currently. Examples include oracles, wallet address generators, bridges, multisig wallets, programming languages, and more. 
 - Bug or vulnerability is discovered by an ethical hacker, bug bounty hunter, or security researcher 
 - Active exploit or hack of your protocol is discovered and reported by a user, community member, or unidentified party 
 - Key internal infrastructure is compromised (e.g., theft of founders' private keys) 
@@ -397,7 +397,7 @@ Another reason to conduct a post-mortem is to gather information for the vulnera
 ### 5.3 Bug Bounties
 Recognizing the invaluable contribution of the white-hat community, Inverter Protocol institutes a bug bounty program. This initiative encourages ethical hackers to identify and report potential vulnerabilities in our system proactively. We offer reasonable rewards in appreciation of their efforts, ensuring that their expertise and time are duly recognized. The program's specifics, including the reward structure and reporting guidelines, will be made available to the public, fostering a collaborative approach to security.
 
-The Bug Bounty would ideally not be limited to smart contract security vulnerabilities but also encompass all other aspects of the Inverter Network, including its web2 components, such as the front end, server security, proxy security, etc. To ensure the safety of its web2 components, Inverter Network can leverage existing legacy bug bounty platforms such as [Hackerone](https://www.hackerone.com/) and [Bugcrowd](https://www.bugcrowd.com/).
+The Bug Bounty would ideally not be limited to smart contract security vulnerabilities but encompass all other aspects of the Inverter Network, including its web2 components, such as the front end, server security, proxy security, etc. To ensure the safety of its web2 components, Inverter Network can leverage existing legacy bug bounty platforms such as [Hackerone](https://www.hackerone.com/) and [Bugcrowd](https://www.bugcrowd.com/).
 
 While Inverter should plan to stay visible on at least one major bug bounty platform at all times, all arrangements should be made to carry out the bug triaging and patching pipeline along with rewarding the whitehat even if the bug report was submitted to Inverter on any other platform via any other means.
 
@@ -406,7 +406,7 @@ In the dynamic landscape of blockchain-based projects, the ability to swiftly re
 - **Inverter-Level Pausing:** This would be done in extreme circumstances where a catastrophic bug has either been discovered or is being actively exploited. If the bug exists on a module that is frequently used in a different array of workflows, Inverter Network intends to implement an Inverter-Level Pausing, where the Inverter Network pushes out a minor update to each and every Inverter module, which pauses all the contracts, until newly patched and tested contract is not re-deployed as another minor update.
 - **Selective Pausing:** We can temporarily halt specific sections of contracts, ensuring that only the affected components are paused while the rest of the system remains operational. The pause can be limited to a certain module or a small set of modules working together. This feature allows for more precise and targeted responses to potential threats or issues, thereby minimizing disruption to the entire system.
 - **Full System Pause:** While we prioritize selective pausing, the protocol is designed to enable a complete system halt if necessary. However, such a decision will only be made after a comprehensive governance decision, ensuring that it is in the best interest of all stakeholders.
-- **Automated Circuit-Breakers:** On top of manual pausing mechanisms, we will implement certain automated circuit breakers where we see the need. These could trigger a pause whenever a certain number of tokens are transferred out of the system or when the system is used in a non-desired way. Our range of heuristics and mechanisms includes both internal implementations and external service providers, such as SphereX.
+- **Automated Circuit-Breakers:** On top of manual pausing mechanisms, we will implement certain automated circuit breakers where necessary. These could trigger a pause whenever a certain number of tokens are transferred out of the system or when the system is used in a non-desired way. Our range of heuristics and mechanisms includes both internal implementations and external service providers, such as SphereX.
 - **User Choice:** It's important to note that all pausing or circuit-breaking mechanisms come with an opt-out option. Some users or use cases might opt for an immutable workflow, where pausing is not an option, while others may not trust an unpausable system.
 
 ### 5.5 Monitoring and Alerts
@@ -523,7 +523,7 @@ Operational security, commonly referred to as OpSec, is the frontline defense ag
 - **Physical Security**: Never leave your hardware wallet unsupervised in public spaces. In addition to digital threats, physical attacks like side-channeling can compromise the wallet.
 - **Seed Phrase Security**: The seed phrase is the ultimate backup. Never input it online or store it digitally. Instead, write it down and store it in a secure location, like a safe. Avoid common storage methods, such as notebooks, which can be easily misplaced or accessed.
 - **Transaction Verification**: Don't blindly sign any transaction. Always compare hashes and meticulously verify the inputs, ensuring that the function and the contract address match your intentions. Be aware of known attacks that manipulate transactions during the signing process, leading users to inadvertently sign malicious transactions.
-- **Regular Software Updates**: Ensure that the wallet software and any related applications are regularly updated. This will protect you from any known vulnerabilities.
+- **Regular Software Updates**: Ensure that the wallet software and any related applications are regularly updated. This will protect you from known vulnerabilities.
 - **Avoid Public Wi-Fi**: Be very cautious when accessing your wallet or conducting transactions over public Wi-Fi. It is often insecure and can be a hotbed for man-in-the-middle attacks. Consider using a VPN service to further protect your network traffic from attackers within the same network.
 
 Here are some good articles and guidelines that outline further best practices of OpSec:
@@ -534,7 +534,7 @@ Here are some good articles and guidelines that outline further best practices o
 In the unfortunate event of a private key compromise, especially for contract admins, the Inverter Protocol has a structured response mechanism:
 - **Multisig Protection**: At the forefront of our defense is the use of multisig wallets for critical access control. This ensures that a single compromised key doesn't jeopardize the entire system, and the decentralized control provided by multisig wallets is crucial in such scenarios.
 - **Immediate Assessment**: Should a compromise be detected or reported, our team will swiftly assess the extent of the potential damage. We'll determine if the ownership of any contracts that the compromised key had access to can be replaced.
-- **Fund Rescue**: If there's an immediate threat to funds due to the compromised key, we'll initiate measures to secure and rescue any at-risk assets. This could involve moving funds to a secure contract or initiating protective protocol mechanisms.
+- **Fund Rescue**: If the compromised key threatens funds immediately, we'll initiate measures to secure and rescue any at-risk assets. This could involve moving funds to a secure contract or initiating protective protocol mechanisms.
 - **Address Removal from Multisig**: If a key within a multisig setup is identified as compromised, it will be promptly removed to ensure the continued security of the protocol. Replacement signatories will be considered based on governance decisions.
 
 ### 6.4 Cloud Key Management
@@ -542,7 +542,7 @@ Our cryptographic material handling follows institutional-grade standards across
 
 **Production Credentials**  
 - **Storage:** Never persisted in version control systems, even encrypted  
-- **Rotation:** Automated through secrets manager with 90-day maximum lifespan  
+- **Rotation:** Automated through secrets manager with a 90-day maximum lifespan  
 - **Access:** Ephemeral IAM roles scoped to CI/CD job requirements  
 
 **Human Access Controls**  
