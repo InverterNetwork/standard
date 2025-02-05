@@ -36,6 +36,43 @@ A modular approach to architecture is akin to building with LEGO blocks. Each mo
 
 In conclusion, the architectural choices of the Inverter Protocol are not just about building a robust system today but about ensuring that it remains resilient, adaptable, and secure in the face of future challenges. By prioritizing simplicity and adopting a modular approach, we lay a foundation that safeguards our stakeholders' interests and paves the way for sustainable growth.
 
+### 1.3 Defense in Depth
+While smart contract security remains paramount, we extend our security principles to all layers of the stack through overlapping protective measures:
+
+**Infrastructure Hardening**  
+Every service component undergoes rigorous hardening before deployment. This includes:
+- Minimal attack surface configuration using industry-standard benchmarks (CIS Level 1)
+- Immutable infrastructure patterns where production systems deploy as read-only artifacts
+- Automated vulnerability scanning of container images and VM templates
+
+**Network Security Architecture**  
+Our network design follows zero-trust principles with:
+- Tiered segmentation separating frontend, backend, and management planes
+- Strict ingress/egress filtering using next-generation firewalls
+- Encrypted service-to-service communication via mutual TLS authentication
+- In the future: Continuous traffic analysis for protocol anomalies
+
+**Identity and Access Fabric**  
+The identity layer implements:
+- Hardware-backed service identities for all automated components
+- Just-in-time certificate issuance with short validity periods
+- Automated credential rotation integrated with hardware security modules
+- Multi-factor authentication enforcement for human operators
+
+**Cryptographic Controls**  
+We employ defense-grade cryptography through:
+- FIPS 140-2 validated modules for key generation/storage
+- Threshold signature schemes for critical operations
+
+**Observability Stack**  
+Security telemetry flows through:
+- Unified security information and event management (SIEM) system
+- Behavioral anomaly detection across cloud and blockchain layers
+- Immutable audit trails preserved in write-once storage
+- Automated alert correlation reducing mean-time-to-detect
+
+This layered approach ensures that even if one security control fails, subsequent layers provide overlapping protection. We continuously validate these defenses through purple team exercises that simulate advanced persistent threats across the entire stack.
+
 ---
 
 ## 2. Testing Methodology
@@ -75,6 +112,55 @@ The blockchain ecosystem, while revolutionary, has witnessed its share of vulner
 - If any historical vulnerability is identified to be relevant for our codebase, we collect these in a list. Based on this list, we are then able to verify whether we sufficiently covered said vulnerabilities via simulative tests or other means.
 In essence, testing at Inverter Protocol is not a mere procedural step but a holistic strategy. By combining traditional testing methods with innovative approaches and learning from historical vulnerabilities, we ensure a robust, reliable, and resilient protocol for our users.
 
+### 2.7 Frontend Security Testing
+While smart contract security forms our core focus, we extend rigorous testing to user-facing components through a three-pillar approach:
+
+**1. Interactive Interface Validation**  
+Web interfaces undergo comprehensive security vetting:
+- **Client-Side Protections:**  
+  - Automated XSS/CSRF detection via static analysis and dynamic scanners  
+  - Content Security Policy (CSP) enforcement with strict directive whitelisting  
+  - Subresource Integrity (SRI) hashing for all third-party scripts/stylesheets  
+- **Wallet Integration Safety:**  
+  - EIP-712 signature validation for all meta-transactions    
+  - Transaction simulation previews with gas estimation safeguards  
+  - Security Analysis service integration for real-time threat detection
+
+**2. Dependency Hygiene**  
+Frontend supply chain security includes:  
+- **Vulnerability Scanning:**  
+  - Daily npm audit runs with severity threshold enforcement  
+  - Commercial vulnerability database monitoring (CVEs/NVD)  
+- **License Compliance:**  
+  - Automated license inventory generation  
+  - Copyleft detection and policy enforcement  
+- **Lifecycle Management:**  
+  - Deprecated package monitoring with migration roadmaps  
+  - Cryptographic verification of locked dependency versions  
+
+**3. Real-World Attack Simulation**  
+Quarterly external penetration tests validate:  
+- **Browser Exploit Resistance:**  
+  - DOM-based attack surface analysis  
+  - Phishing vector identification (fake wallet connectors)  
+- **API Security:**  
+  - OAuth2 token binding validation  
+  - Session fixation testing across subdomains  
+- **Infrastructure Integration:**  
+  - DNS/SSL configuration hardening checks  
+  - CDN cache poisoning resistance verification  
+
+Findings are triaged using CVSS scoring with mandatory remediation timelines based on severity ratings. All frontend deployments require passing security thresholds across these test categories before production release.
+
+### 2.8 CI/CD Security
+Our continuous integration and delivery pipeline implements a zero-trust model throughout the software supply chain. Build processes execute in isolated ephemeral environments to prevent cross-contamination between development branches, with each step requiring cryptographic verification of its execution context.
+
+Artifact integrity is maintained through signed build outputs and provenance verification, ensuring only authorized code reaches production. Dependency management combines version pinning with automated CVE scanning at every stage, while binary authorization policies prevent unauthorized third-party components from entering the build process.
+
+Access controls follow strict least-privilege principles - human operators require multi-factor authentication and time-bound approvals for deployment actions, while automated systems use short-lived credentials scoped to specific environments. All configuration changes undergo mandatory peer review with immutable audit trails preserved in a dedicated security log.
+
+Monitoring systems track pipeline metrics against behavioral baselines, triggering automated lockdown procedures for anomalies like unexpected build durations or resource consumption patterns. Failed security checks initiate incident response protocols that halt deployments until manual verification completes.
+
 ---
 
 ## 3. Audit Strategy
@@ -107,6 +193,26 @@ Post-audit, our commitment to transparency comes to the fore:
 - **Community Engagement:** We aim to actively engage with our community post-audit, addressing questions, concerns, and feedback. This two-way dialogue ensures that our stakeholders are always in the loop and reinforces trust.
 
 In conclusion, audits at Inverter Protocol are a testament to our unwavering commitment to security and transparency. By embracing a comprehensive, multi-layered, and continuous audit strategy, we ensure that our protocol stands up to the highest standards of security and reliability in the Ethereum ecosystem.
+
+### 3.6 Compliance Considerations
+While not currently certified, we align our security practices with leading standards including:
+
+- **Penetration Testing Standards:**  
+  Regular external testing aligned with Open Web Application Security Project (OWASP) Top 10 and Cloud Security Alliance (CSA) guidelines
+
+- **Information Security Management:**  
+  ISO 27001 controls framework for establishing/maintaining information security management systems
+
+- **Cloud Security Specifics:**  
+  ISO 27017 code of practice for information security controls in cloud services
+
+- **Service Organization Controls:**  
+  System and Organization Controls (SOC) 2 Type II feasibility analysis for trust services criteria
+
+- **Cryptocurrency Security:**  
+  Cryptocurrency Security Standard (CCSS) Level 3 requirements for institutional-grade asset protection
+
+This remains an active research area as we evaluate certification pathways against operational requirements.
 
 ---
 
@@ -176,6 +282,29 @@ This is an area of interest that is still under active discussion. However, the 
 Moreover, it was observed that it is not necessary to license the entire Inverter Network contracts under the same license and a set of different licenses can definitely be used for different parts of the codebase. Case in point: [Uniswap v4](https://github.com/Uniswap/v4-core). Therefore, licensing would be done according to the future envisioned utility of each code segment.
 There is also active research going on in the area of re-licensing to explore whether we can re-license our current repository to use different licenses and what kind of legal/ethical implications these have.
 
+### 4.5 Software Dependencies
+Our dependency management strategy spans both application and smart contract layers:
+
+**Smart Contract Development**  
+- **Foundry Integration:**  
+  - Pinned dependency versions verified through cryptographic hashes  
+  - Git submodules for direct source control of external contracts  
+  - Automated vulnerability scans during `pre-commit` processes and in the CI/CD pipeline
+- **Upgradeable Components:**  
+  - Immutable dependency contracts preferred where possible  
+  - Timelock-enforced upgrade paths for critical integrations  
+  - Impact analysis for dependency version changes
+
+**Application Development**  
+- **Package Management:**  
+  - NPM/Yarn dependencies locked with exact version specifiers  
+  - Automated license compliance checks during CI builds  
+  - Peer review requirements for major version updates
+- **Container Security:**  
+  - Distroless base images from approved repositories  
+  - Image signing with Cosign for deployment verification  
+  - Runtime vulnerability scanning via eBPF probes
+
 ---
 
 ## 5. Emergency Protocols
@@ -188,7 +317,7 @@ For example, this repository should clearly state how many audits the protocol h
 
 The repository should contain the e-mail addresses of the relevant team members from the Inverter Network that would act as the first responders to any report of security breaches in the Inverter Network. The email addresses of the team members should be accompanied by their PGP keys so that all communication between the whitehat and the protocol happens through an encrypted channel.
 
-The contact details for the Inverter Network team should not only be present in their own repository but also on platforms that aggregate the contact information for different DeFi projects, such as [OpenZeppelin’s Smart Contract Security Registry](https://blog.openzeppelin.com/smart-contract-security-registry) or [Blockchain Security Contacts](https://github.com/crytic/blockchain-security-contacts).
+The contact details for the Inverter Network team should not only be present in their own repository but also on platforms that aggregate the contact information for different DeFi projects, such as [OpenZeppelin's Smart Contract Security Registry](https://blog.openzeppelin.com/smart-contract-security-registry) or [Blockchain Security Contacts](https://github.com/crytic/blockchain-security-contacts).
 
 ### 5.2 The Emergency Protocol
 
@@ -290,6 +419,52 @@ Effective communication, both internally and externally, is paramount during eme
 - **External Reporting Channels:** We will establish dedicated channels where external parties, be they users or white-hat hackers, can swiftly report concerns or vulnerabilities.
 - **Internal Communication:** A secure and efficient internal chat system will be set up, ensuring that our team can coordinate seamlessly, discuss ongoing issues, and implement solutions without delay.
 
+### 5.7 Cloud Incident Response
+Our cloud emergency protocols extend beyond smart contract protections to address infrastructure-level threats through coordinated containment strategies:
+
+**Breach Containment Playbook**  
+Upon detecting unauthorized access, we initiate automated isolation procedures that segment compromised accounts while maintaining core service availability. This includes immediate credential rotation through integrated secrets management systems and infrastructure rollbacks using version-controlled configuration templates.
+
+**Distributed Attack Mitigation**  
+For volumetric attacks targeting cloud resources, our layered defenses combine traffic filtering through global scrubbing centers with intelligent rate limiting that distinguishes legitimate users from malicious bots. Capacity scaling plans maintain service continuity while forensic tooling preserves attack patterns for post-incident analysis.
+
+**Recovery Orchestration**  
+All remediation workflows follow pre-validated runbooks that prioritize:  
+- Evidence preservation for regulatory reporting  
+- Gradual service restoration with integrity checks  
+- Compromise root cause analysis using immutable logs  
+
+Response timelines and decision trees are regularly validated through tabletop exercises simulating advanced persistent threats across hybrid cloud environments.
+
+### 5.8 Monitoring & Observability
+Our surveillance strategy employs layered detection systems spanning blockchain and infrastructure layers:
+
+**Inverter Guardian System**  
+This proprietary monitoring solution operates at three levels:
+- **Blockchain Layer Analysis:**  
+  - Processes every new block across supported networks, scanning all transaction interactions with protocol contracts
+  - Maintains real-time transaction pattern analysis using historical behavior baselines
+- **Threat Detection:**  
+  - Protocol-specific attack signature database updated with emerging exploit patterns  
+  - External account reputation checks via integrated security APIs
+- **Intelligence Integration:**  
+  - Combines internal heuristics with third-party threat feeds  
+  - Automated alert prioritization using machine learning models
+
+**Unified Security Information System**  
+Cross-platform monitoring combines:
+- On-chain event correlation with cloud infrastructure telemetry  
+- Behavioral anomaly detection across user sessions and API endpoints  
+- Immutable audit trails preserved in write-once storage systems
+
+**Operational Health Checks**  
+Automated verification mechanisms ensure system resilience:
+- Synthetic transaction monitoring across test networks  
+- Dependency uptime validation through heartbeat checks  
+- Graceful degradation enforcement during partial outages  
+
+This multi-spectrum approach enables sub-60 second detection of critical anomalies while maintaining <2% false positive rate across alert streams. Continuous validation occurs through purple team exercises simulating sophisticated cross-chain attacks.
+
 ---
 
 ## 6. Access Control and Permissions
@@ -362,3 +537,25 @@ In the unfortunate event of a private key compromise, especially for contract ad
 - **Fund Rescue**: If there's an immediate threat to funds due to the compromised key, we'll initiate measures to secure and rescue any assets at risk. This could involve moving funds to a secure contract or initiating protective protocol mechanisms.
 - **Address Removal from Multisig**: If a key within a multisig setup is identified as compromised, it will be promptly removed to ensure the continued security of the protocol. Replacement signatories will be considered based on governance decisions.
 
+### 6.4 Cloud Key Management
+Our cryptographic material handling follows institutional-grade standards across environments:
+
+**Production Credentials**  
+- **Storage:** Never persisted in version control systems, even encrypted  
+- **Rotation:** Automated through secrets manager with 90-day maximum lifespan  
+- **Access:** Ephemeral IAM roles scoped to CI/CD job requirements  
+
+**Human Access Controls**  
+- **Authentication:** Hardware-based multi-factor authentication enforcement  
+- **Authorization:** Just-in-time elevation with maximum 4-hour validity  
+- **Auditing:** Key usage logs immutable in security information systems  
+
+**Signing Operations**  
+- **HSM Integration:** Cloud-hosted hardware security modules for automated signing  
+- **Transaction Safety:** Isolated VPC execution with air-gapped approval flows  
+- **Key Separation:** Dedicated cryptographic material per environment tier  
+
+**Disaster Recovery**  
+- **Geographic Distribution:** Keys replicated across availability zones  
+- **Backup Protocols:** Shamir's Secret Sharing with geographically dispersed trustees  
+- **Revocation:** Automated through centralized certificate authority integration
