@@ -8,7 +8,7 @@
 3. [Audit Strategy](#3-audit-strategy)
 4. [Dependency Management](#4-dependency-management)
 5. [Emergency Protocols](#5-emergency-protocols)
-6. [Access Control](#6-access-control)
+6. [Access Control and Permissions](#6-access-control-and-permissions)
 
 ---
 
