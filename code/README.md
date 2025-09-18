@@ -17,50 +17,45 @@ The Inverter Code Standard is a comprehensive set of guidelines for developing s
    - [Security First](#security-first)
    - [Documentation Requirements](#documentation-requirements)
 
-3. [Naming Conventions](#3-naming-conventions)
+3. [Tools and Environment](#3-tools-and-environment)
+   - [Required Tools](#required-tools)
+
+4. [Naming Conventions](#4-naming-conventions)
    - [Contracts](#contracts)
    - [Functions](#functions)
    - [Variables](#variables)
    - [Files and Folders](#files-and-folders)
 
-4. [Code Layout](#4-code-layout)
+5. [Code Layout](#5-code-layout)
    - [Contract Structure](#contract-structure)
    - [Interface Structure](#interface-structure)
 
-5. [Contract Inheritance](#5-contract-inheritance)
+6. [Contract Inheritance](#6-contract-inheritance)
    - [Interface Inheritance](#interface-inheritance)
    - [Virtual Function Standards](#virtual-function-standards)
    - [Storage Layout Considerations](#storage-layout-considerations)
    - [Initialization Patterns](#initialization-patterns)
 
-6. [Documentation Standards](#6-documentation-standards)
+7. [Documentation Standards](#7-documentation-standards)
    - [NatSpec Requirements](#natspec-requirements)
    - [Folder-based READMEs](#folder-based-readmes)
    - [Code Comments](#code-comments)
 
-7. [Testing](#7-testing)
+8. [Testing](#8-testing)
    - [Test Types and Coverage](#test-types-and-coverage)
    - [Gherkin Test Documentation](#gherkin-test-documentation)
    - [Mock Usage](#mock-usage)
    - [Test Naming Conventions](#test-naming-conventions)
 
-8. [Git Standards](#8-git-standards)
+9. [Git Standards](#9-git-standards)
    - [Branch Strategy](#branch-strategy)
    - [Commit Messages](#commit-messages)
    - [Pull Request Process](#pull-request-process)
 
-9. [Development Workflow](#9-development-workflow)
-   - [Development Notes](#development-notes)
-   - [Versioning](#versioning)
-   - [Deployment Guidelines](#deployment-guidelines)
-
-10. [Tools and Environment](#10-tools-and-environment)
-    - [Required Tools](#required-tools)
-    - [Configuration](#configuration)
-
-11. [Best Practices](#11-best-practices)
-    - [Contract Size Optimization](#contract-size-optimization)
-    - [Security Considerations](#security-considerations)
+10. [Development Workflow](#10-development-workflow)
+    - [Development Notes](#development-notes)
+    - [Versioning](#versioning)
+    - [Deployment Guidelines](#deployment-guidelines)
 
 ## 1. Introduction
 
@@ -97,19 +92,12 @@ While initially focused on Solidity smart contracts, these standards provide a f
    - Maintain consistency with these universal standards
 
 4. **Document Maintenance**
-3. **For Project Customization**
-   - Adapt universal principles to your specific project needs
-   - Maintain consistency with these universal standards
-
-4. **Document Maintenance**
    - Updates require team consensus
    - Suggestions for improvements are welcome through PRs
 
 5. **Enforcement**
-5. **Enforcement**
    - All code must comply with these standards
    - Deviations require explicit approval and documentation
-   - Automated tools will enforce applicable standards where possible
    - Automated tools will enforce applicable standards where possible
    - Regular code reviews will ensure continued compliance
 
@@ -141,7 +129,6 @@ While initially focused on Solidity smart contracts, these standards provide a f
   - When in doubt, choose the more secure option
 
 - **Security Requirements**
-#
   - Implement robust access controls
   - Follow check-effects-interactions pattern
 
@@ -167,7 +154,25 @@ While initially focused on Solidity smart contracts, these standards provide a f
   - Known issues and workarounds
   - Deprecation notices when applicable
 
-## 3. Naming Conventions
+## 3. Tools and Environment
+
+### Required Tools
+
+**Development Stack**:
+- **Foundry**: Primary development framework
+- **VSCode**: Recommended IDE with Solidity extensions
+- **Git**: Version control
+
+**Recommended Extensions**:
+- Inline Bookmarks (for @todo/@note tracking)
+- Solidity language support
+- GitLens for enhanced Git integration
+
+**AI Tooling** (Optional but Recommended):
+- Cursor
+
+
+## 4. Naming Conventions
 
 ### Contracts
 
@@ -203,7 +208,8 @@ While initially focused on Solidity smart contracts, these standards provide a f
 
 **Parameters**
 - Always add `_` at the end: `user_`, `amount_`
-- Applies to functions, events, and errors
+- Applies to function parameters, event parameters, and error parameters
+- Exception: Mapping key/value names do NOT use trailing underscores
 
 **Return Values**
 - Always name return values: `returns (uint amount_)`
@@ -229,95 +235,45 @@ While initially focused on Solidity smart contracts, these standards provide a f
 
 **Local Variables**
 - No underscores at start or end
+- Use camelCase: `totalAmount`, `userBalance`, `isValid`
+
+**Events and Errors**
+- Event parameter names: Use trailing `_` like function parameters
+- Error parameter names: Use trailing `_` like function parameters
+- Examples:
+  ```solidity
+  event PaymentProcessed(address indexed user_, uint amount_, bytes32 txHash_);
+  error InvalidAmount(uint provided_, uint minimum_);
+  ```
 
 **Mappings**
-- Always name mapping parameters
-- Example: `mapping(uint id => Bounty bounty) internal _idToBounty`
+- Always name mapping parameters (no trailing underscores for key/value names)
+- Pattern: `mapping(<keyType> <keyName> => <valueType> <valueName>) internal _<descriptiveName>`
+- Examples:
+  - `mapping(uint id => Bounty bounty) internal _idToBounty`
+  - `mapping(address user => uint balance) internal _userBalances`
+  - `mapping(bytes32 role => bool hasRole) internal _rolePermissions`
 
-### Files and Folders
-
-**File Naming**
-- Files use PascalCase: `PaymentProcessor_v1.sol`
-- Folders use camelCase: `paymentProcessor/`
-- File names should match primary contract within
-- Interfaces prefixed with "I": `IPaymentProcessor_v1.sol`
-
-## 4. Code Layout
-
-### Contract Structure
-
-All contracts follow this order:
-
-1. **Licensing**: `// SPDX-License-Identifier: LGPL-3.0-only`
-2. **Pragma**: `pragma solidity 0.8.23;` (contracts) or `pragma solidity ^0.8.0;` (interfaces)
-3. **Imports**:
-## 3. Naming Conventions
-
-### Contracts
-
-**Contract Files**
-- End with their major version: `ContractName_v1`
-- Use PascalCase for contract names
-- Example: `BountyManager_v1`
-
-**Test Files**
-- Copy contract name and add `.t.sol`: `BountyManager_v1.t.sol`
-- Test contracts add `_Test`: `BountyManager_v1_Test`
-
-**Mock Files**
-- Access mocks (for internal functions): `ContractName_v1_Exposed.sol`
-- Regular mocks: `ContractName_v1_Mock.sol`
-
-### Functions
-
-**Visibility Patterns**
-- Private & Internal functions start with `_`
-- Example: `_calculateFee()`
-
-**Getter Functions**
-- Boolean getters: `is<StateInTrueWay>()` - Example: `isOpen()`
-- General getters: `get<VariableName>()` - Example: `getFundingManager()`
-- Mapping getters: `get<Target>By<Parameter>()` - Example: `getBountyById()`
-
-**Modifiers**
-- Named as: `contextIsState()` - Example: `userIsAuthorized()`
-- Internal modifier functions: `_ensureContextIsState` - Example: `_ensureUserIsAuthorized()`
-
-### Variables
-
-**Parameters**
-- Always add `_` at the end: `user_`, `amount_`
-- Applies to functions, events, and errors
-
-**Return Values**
-- Always name return values: `returns (uint amount_)`
-- Always explicitly return, no implicit assignment
-- Example:
+**Underscore Usage Summary**
+- **Leading `_`**: Private/internal functions and state variables
+- **Trailing `_`**: Function parameters, event parameters, error parameters, return values
+- **No underscores**: Local variables, mapping key/value names, public functions
+- **Examples**:
   ```solidity
-  /// @param y_ this is the input
-  /// @return x_ this is returned
-  function example(uint y_) returns (uint x_) {
-      if(y_ > 2) {
-          x_ = 15;
-      } else {
-          x_ = 16;
+  contract Example {
+      uint internal _balance;                           // Leading: internal variable
+
+      function process(uint amount_) returns (bool success_) {  // Trailing: params & returns
+          uint localAmount = amount_ * 2;               // None: local variable
+          return _processInternal(localAmount);         // Leading: internal function
       }
-      return x_;
+
+      function _processInternal(uint value) internal { ... }    // Leading: internal function
+
+      mapping(address user => uint balance) _userBalances;      // Mixed: trailing for variable, none for mapping params
   }
   ```
 
-**State Variables**
-- Internal/Private start with `_`: `_emergencyState`
-- Everything internal by default unless good reason
-- Constants can be public (must be in interface)
-
-**Local Variables**
-- No underscores at start or end
-
-**Mappings**
-- Always name mapping parameters
-- Example: `mapping(uint id => Bounty bounty) internal _idToBounty`
-
 ### Files and Folders
 
 **File Naming**
@@ -326,19 +282,21 @@ All contracts follow this order:
 - File names should match primary contract within
 - Interfaces prefixed with "I": `IPaymentProcessor_v1.sol`
 
-## 4. Code Layout
+## 5. Code Layout
 
 ### Contract Structure
 
 All contracts follow this order:
 
 1. **Licensing**: `// SPDX-License-Identifier: LGPL-3.0-only`
-2. **Pragma**: `pragma solidity 0.8.23;` (contracts) or `pragma solidity ^0.8.0;` (interfaces)
+2. **Pragma**:
+   - **Contracts**: `pragma solidity 0.8.23;` (fixed version for production deployments)
+   - **Interfaces**: `pragma solidity ^0.8.0;` (flexible version for broader compatibility)
+   - **Rationale**: Contracts use fixed versions to ensure deterministic deployments and prevent unexpected behavior from compiler updates. Interfaces use flexible versions to allow integration with projects using different Solidity versions within the 0.8.x range.
 3. **Imports**:
    ```solidity
    // External
    import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
 
    // Internal
    import "./interfaces/IPaymentProcessor_v1.sol";
@@ -559,7 +517,7 @@ interface IExampleContract_v2 {
 }
 ```
 
-## 5. Contract Inheritance
+## 6. Contract Inheritance
 
 ### Interface Inheritance
 
@@ -595,6 +553,32 @@ interface IComplexInterface_v1 is IBaseInterface_v1 {
 }
 ```
 
+### Virtual Function Standards
+
+All functions should be marked as `virtual` to enable proper inheritance and future extensibility.
+
+**When to Use Virtual**:
+- All public and external functions (unless final implementation)
+- All internal functions that may need overriding
+- Functions in abstract contracts and base contracts
+
+
+### Storage Layout Considerations
+
+**Storage Gap Patterns**:
+For upgradeable contracts, reserve 50 storage slots to prevent conflicts:
+
+```solidity
+contract BaseContract {
+    uint internal _value;
+
+    // Reserve 50 slots for future use
+    uint[50] private __gap;
+}
+```
+
+**Note**: Storage gaps are only required for contracts that will be upgraded or extended. Non-upgradeable contracts do not need storage gaps.
+
 ### Initialization Patterns
 
 Each contract has an initialization function formatted as `__ContractName_Init()`, similar to OpenZeppelin.
@@ -620,7 +604,7 @@ function init(
 }
 ```
 
-## 6. Documentation Standards
+## 7. Documentation Standards
 
 ### NatSpec Requirements
 
@@ -653,25 +637,41 @@ Every contract, interface, and library must have comprehensive NatSpec:
 - Add explicit NatSpec when overriding or extending functionality
 - Internal functions should have NatSpec (contract-level since not in interface)
 
+**NatSpec Tag Usage**:
+- **`@notice`**: Always required - user-facing description of what the function does
+- **`@dev`**: Optional - technical implementation details, security notes, or developer warnings
+- **`@param`**: Required for each parameter - describe the parameter's purpose
+- **`@return`**: Required for return values - describe what is returned
+- **When to use `@dev`**:
+  - Security considerations or warnings
+  - Implementation details that affect usage
+  - Integration notes for other developers
+  - Performance considerations
+
 **Examples**:
 ```solidity
-/// @notice The amount of rewards generated up until now
+/// @notice The total amount of rewards generated up until now
 uint internal _reward;
 
-/// @notice Returns the reward amount
-/// @return amount_ The amount of rewards
-function getRewards() external returns (uint amount_)
+/// @notice Returns the current reward amount
+/// @return amount_ The total amount of rewards available
+function getRewards() external view returns (uint amount_);
 
-/// @notice Calculates rewards at this timestamp
-/// @dev Shouldn't be called by non-admin
-/// @param timestamp_ The current timestamp
-/// @return rewardAmount_ The amount of rewards at this moment
-function _calculateRewardAmount(uint timestamp_) internal returns (uint rewardAmount_)
+/// @notice Calculates reward amount at a specific timestamp
+/// @dev Should only be called by authorized users due to gas costs
+/// @param timestamp_ The timestamp to calculate rewards for
+/// @return rewardAmount_ The calculated reward amount at the given time
+function _calculateRewardAmount(uint timestamp_) internal view returns (uint rewardAmount_);
 
 /// @notice Maps user addresses to their token balance
-/// @dev user The address of the user
-/// @dev balance The token balance of the user
+/// @dev Key: user address, Value: balance amount in wei
 mapping(address user => uint balance) internal _userBalances;
+
+/// @notice Processes a payment with security checks
+/// @dev Follows check-effects-interactions pattern for reentrancy protection
+/// @param recipient_ Address to receive the payment
+/// @param amount_ Amount to transfer in wei
+function processPayment(address recipient_, uint amount_) external;
 ```
 
 **Line Length**: Keep to 80 characters max for comments and NatSpec.
@@ -725,7 +725,7 @@ docs/
 - Complex mathematical operations
 - Integration points with external contracts
 
-## 7. Testing
+## 8. Testing
 
 ### Test Types and Coverage
 
@@ -747,9 +747,9 @@ All test files must start with Gherkin-style documentation:
 ```solidity
 /* Test _processProtocolFeeViaMinting() function
     ├── Given the fee amount > 0
-    │   └── And the treasury address is invalid
-    │       └── When the function _processProtocolFeeViaMinting() is called
-    │           └── Then the transaction should revert
+    │   ├── And the treasury address is invalid
+    │   │   └── When the function _processProtocolFeeViaMinting() is called
+    │   │       └── Then the transaction should revert
     │   └── And the treasury address is valid
     │       └── When the function _processProtocolFeeViaMinting() is called
     │           └── Then it should mint tokens to treasury
@@ -794,7 +794,7 @@ emit IContract_v1.Contract__EventName(param1, param2);
 vm.expectRevert(IContract_v1.Contract__ErrorName.selector);
 ```
 
-## 8. Git Standards
+## 9. Git Standards
 
 ### Branch Strategy
 
@@ -842,7 +842,7 @@ For PRs reaching dev or main, use squashed commits with well-formatted messages:
 - Tag reviewers for complex discussions
 - Don't squash commits until final approval
 
-## 9. Development Workflow
+## 10. Development Workflow
 
 ### Development Notes
 
@@ -882,69 +882,6 @@ For PRs reaching dev or main, use squashed commits with well-formatted messages:
 - Clear distinction between testnet and mainnet deployments
 - Environment-specific configuration management
 - Proper testing before mainnet deployment
-
-## 10. Tools and Environment
-
-### Required Tools
-
-**Development Stack**:
-- **Foundry**: Primary development framework
-- **VSCode**: Recommended IDE with Solidity extensions
-- **Git**: Version control
-
-**Recommended Extensions**:
-- Inline Bookmarks (for @todo/@note tracking)
-- Solidity language support
-- GitLens for enhanced Git integration
-
-**AI Tooling** (Optional but Recommended):
-- Cursor
-
-### Configuration
-
-**VSCode Settings**: Repository should include `.vscode` folder with:
-- Recommended extensions
-- Workspace settings for consistent formatting
-- Debug configurations
-
-**Foundry Configuration**: Standardized `foundry.toml` settings
-
-## 11. Best Practices
-
-### Contract Size Optimization
-
-**Modifier Patterns**:
-```solidity
-modifier userIsAuthorized() {
-    _ensureUserIsAuthorized();
-    _;
-}
-
-function _ensureUserIsAuthorized() internal {
-    require(authorized, "User not authorized");
-}
-```
-
-**General Rules**:
-- Move reusable logic to libraries
-- Externalize repeated code fragments into functions (DRY principle)
-- Consider inlining functions called only once
-- Minimize buffer variables (balance with gas efficiency)
-- Use optimizer settings appropriately
-
-**Note**: Contract size optimization often conflicts with code readability - decide case-by-case.
-
-### Security Considerations
-
-**Virtual Functions**: All functions should be `virtual` for easy overriding in subsequent contracts
-
-**Access Control**: Use consistent patterns for authorization and authentication
-
-**External Calls**: Always treat external contract calls as potentially malicious
-
-**State Changes**: Handle atomically following check-effects-interactions pattern
-
-**Upgradability**: Consider upgrade patterns early in design
 
 ---
 
