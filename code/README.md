@@ -48,21 +48,17 @@ The Inverter Code Standard is a comprehensive set of guidelines for developing s
    - [Commit Messages](#commit-messages)
    - [Pull Request Process](#pull-request-process)
 
-9. [CI/CD and Quality Assurance](#9-cicd-and-quality-assurance)
-   - [Contract Size Monitoring](#contract-size-monitoring)
-   - [Test Coverage Enforcement](#test-coverage-enforcement)
-   - [Automated Quality Gates](#automated-quality-gates)
 
-10. [Development Workflow](#10-development-workflow)
+9. [Development Workflow](#9-development-workflow)
     - [Development Notes](#development-notes)
     - [Versioning](#versioning)
     - [Deployment Guidelines](#deployment-guidelines)
 
-11. [Tools and Environment](#11-tools-and-environment)
+10. [Tools and Environment](#10-tools-and-environment)
     - [Required Tools](#required-tools)
     - [Configuration](#configuration)
 
-12. [Best Practices](#12-best-practices)
+11. [Best Practices](#11-best-practices)
     - [Contract Size Optimization](#contract-size-optimization)
     - [Security Considerations](#security-considerations)
 
@@ -481,12 +477,9 @@ interface IExampleContract_v2 {
 
 Interfaces should contain the same functions as the contract and inherit from any contract that the implementing contract inherits from.
 
-@todo Extend on this for more details
-
 **Example**:
 ```solidity
 interface IComplexContract_v1 is IBaseContract_v1, IMiddleContract_v1 {
-    // IComplexContract_v1 specific functions
 }
 ```
 
@@ -548,8 +541,6 @@ Every contract, interface, and library must have comprehensive NatSpec:
 - Add explicit NatSpec when overriding or extending functionality
 - Internal functions should have NatSpec (contract-level since not in interface)
 
-@todo do mapping exampls
-
 **Examples**:
 ```solidity
 /// @notice The amount of rewards generated up until now
@@ -564,13 +555,17 @@ function getRewards() external returns (uint amount_)
 /// @param timestamp_ The current timestamp
 /// @return rewardAmount_ The amount of rewards at this moment
 function _calculateRewardAmount(uint timestamp_) internal returns (uint rewardAmount_)
+
+/// @notice Maps user addresses to their token balance
+/// @dev user The address of the user
+/// @dev balance The token balance of the user
+mapping(address user => uint balance) internal _userBalances;
 ```
 
 **Line Length**: Keep to 80 characters max for comments and NatSpec.
 
 ### Folder-based READMEs
 
-@todo this doesnt fit
 
 Add README files to important folders explaining contents and concepts. Structure them logically according to your project's architecture.
 
@@ -580,7 +575,18 @@ Add README files to important folders explaining contents and concepts. Structur
 - Provide navigation guidance for developers
 - Must be updated when contracts are added, removed, or changed
 
-**Example Structure**:
+**Example Structures**:
+
+*Smart Contract Folder Structure*:
+```
+src/
+└── contracts/
+    └── core/
+        ├── Contract1.sol
+        └── Contract2.sol
+```
+
+*Documentation Structure*:
 ```
 docs/
 ├── contracts/
@@ -591,6 +597,8 @@ docs/
 │   └── README.md
 └── README.md (links to each contract doc)
 ```
+
+
 
 ### Code Comments
 
@@ -722,38 +730,7 @@ For PRs reaching dev or main, use squashed commits with well-formatted messages:
 - Tag reviewers for complex discussions
 - Don't squash commits until final approval
 
-## 9. CI/CD and Quality Assurance
-
-### Contract Size Monitoring @todo ?
-
-- **Hard Warning**: If over the size limit
-- **Warning**: If size reaches 90% of limit
-- Automated checking in CI pipeline
-
-### Test Coverage Enforcement
-
-- **Hard Limit**: 90% minimum coverage
-- **Warning**: If coverage decreases
-- Coverage reports generated automatically
-
-### Automated Quality Gates
-
-**Compiler Warnings**: Enforce 0 warnings
-
-**Documentation Checks**:
-- Detect missing NatSpec
-- Verify function documentation completeness
-- Check for version tag updates when functions change
-
-**Code Analysis**:
-- Run Slither for security analysis
-- Check naming convention compliance
-- Detect inline bookmarks (@todo, @note)
-- Interface version compatibility checks
-
-**Invariant Testing**: Should always run but not block merging
-
-## 10. Development Workflow
+## 9. Development Workflow
 
 ### Development Notes
 
@@ -794,7 +771,7 @@ For PRs reaching dev or main, use squashed commits with well-formatted messages:
 - Environment-specific configuration management
 - Proper testing before mainnet deployment
 
-## 11. Tools and Environment @todo Add more? / Move to top section?
+## 10. Tools and Environment @todo Add more? / Move to top section?
 
 ### Required Tools
 
@@ -820,7 +797,7 @@ For PRs reaching dev or main, use squashed commits with well-formatted messages:
 
 **Foundry Configuration**: Standardized `foundry.toml` settings
 
-## 12. Best Practices
+## 11. Best Practices
 
 ### Contract Size Optimization
 
