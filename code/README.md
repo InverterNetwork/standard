@@ -26,22 +26,11 @@ The Inverter Code Standard is a comprehensive set of guidelines for developing s
 4. [Code Layout](#4-code-layout)
    - [Contract Structure](#contract-structure)
    - [Interface Structure](#interface-structure)
-   - [Script Structure](#script-structure)
-
-3. [Naming Conventions](#3-naming-conventions)
-   - [Contracts](#contracts)
-   - [Functions](#functions)
-   - [Variables](#variables)
-   - [Files and Folders](#files-and-folders)
-
-4. [Code Layout](#4-code-layout)
-   - [Contract Structure](#contract-structure)
-   - [Interface Structure](#interface-structure)
-   - [Script Structure](#script-structure)
-   - [Test Structure](#test-structure)
 
 5. [Contract Inheritance](#5-contract-inheritance)
    - [Interface Inheritance](#interface-inheritance)
+   - [Virtual Function Standards](#virtual-function-standards)
+   - [Storage Layout Considerations](#storage-layout-considerations)
    - [Initialization Patterns](#initialization-patterns)
 
 6. [Documentation Standards](#6-documentation-standards)
@@ -60,11 +49,10 @@ The Inverter Code Standard is a comprehensive set of guidelines for developing s
    - [Commit Messages](#commit-messages)
    - [Pull Request Process](#pull-request-process)
 
-
 9. [Development Workflow](#9-development-workflow)
-    - [Development Notes](#development-notes)
-    - [Versioning](#versioning)
-    - [Deployment Guidelines](#deployment-guidelines)
+   - [Development Notes](#development-notes)
+   - [Versioning](#versioning)
+   - [Deployment Guidelines](#deployment-guidelines)
 
 10. [Tools and Environment](#10-tools-and-environment)
     - [Required Tools](#required-tools)
@@ -98,8 +86,6 @@ While initially focused on Solidity smart contracts, these standards provide a f
 1. **For New Developers**
    - Read through the entire document before starting development
    - Use as a reference during the development process
-   - Follow checklists provided for each PR @todo ?
-   - Follow checklists provided for each PR @todo ?
 
 2. **For Reviewers**
    - Use as a baseline for code review criteria
@@ -155,19 +141,12 @@ While initially focused on Solidity smart contracts, these standards provide a f
   - When in doubt, choose the more secure option
 
 - **Security Requirements**
-  - All contracts must pass automated security analysis (like Slither, Aderyn, etc.) @todo ?
-  - External contract calls should be treated as potentially malicious @todo ?
-  - All contracts must pass automated security analysis (like Slither, Aderyn, etc.) @todo ?
-  - External contract calls should be treated as potentially malicious @todo ?
+#
   - Implement robust access controls
   - Follow check-effects-interactions pattern
 
 - **Known Vulnerabilities**
-  - Maintain awareness of common attack vectors @todo ?
-  - Maintain awareness of common attack vectors @todo ?
   - Regular security audits and reviews by external parties for any changes
-  - Keep updated on latest security developments @todo ?
-  - Keep updated on latest security developments @todo ?
   - Document all security considerations, also within the code if applicable
 
 ### Documentation Requirements
@@ -586,9 +565,33 @@ interface IExampleContract_v2 {
 
 Interfaces should contain the same functions as the contract and inherit from any contract that the implementing contract inherits from.
 
-**Example**:
+**Hierarchy Best Practices**:
+- Interface inheritance should mirror contract inheritance exactly
+- Each interface level should only declare functions introduced at that level
+
+**Error and Event Inheritance**:
+- Errors and events should be defined in the same interface that introduces related functions
+- Inherited interfaces automatically include parent errors and events
+- Use consistent error naming: `ContractName__FunctionContext__ErrorType`
+
+**Complex Interface Composition Example**:
 ```solidity
-interface IComplexContract_v1 is IBaseContract_v1, IMiddleContract_v1 {
+// Base level - core functionality
+interface IBaseInterface_v1 {
+    error Module__NotInitialized();
+    event ModuleInitialized(address orchestrator);
+
+    function init(bytes memory configData) external;
+    function getModuleType() external view returns (string memory);
+}
+
+// Complex level - specific implementation
+interface IComplexInterface_v1 is IBaseInterface_v1 {
+    error Module__ComplexInterface__InvalidAmount();
+    event PaymentProcessed(address indexed user_, uint amount_);
+
+    function processPayment(address receiver_, uint amount_) external;
+    function getFeeRate() external view returns (uint);
 }
 ```
 
@@ -880,7 +883,7 @@ For PRs reaching dev or main, use squashed commits with well-formatted messages:
 - Environment-specific configuration management
 - Proper testing before mainnet deployment
 
-## 10. Tools and Environment @todo Add more? / Move to top section?
+## 10. Tools and Environment
 
 ### Required Tools
 
@@ -895,7 +898,7 @@ For PRs reaching dev or main, use squashed commits with well-formatted messages:
 - GitLens for enhanced Git integration
 
 **AI Tooling** (Optional but Recommended):
-- Supermaven or similar for code completion
+- Cursor
 
 ### Configuration
 
