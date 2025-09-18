@@ -271,7 +271,109 @@ All contracts follow this order:
 13. **Public Functions** (grouped by getter/mutating, sorted by functionality)
 14. **Internal Functions** (plain internal, then overridden)
 
-@todo Provide examples maybe in different folder and file?
+**Example Structure:**
+
+```solidity
+// SPDX-License-Identifier: LGPL-3.0-only
+pragma solidity 0.8.23;
+
+// Internal Dependencies
+import {Module_v2, IModule_v2} from "@mod/base/Module_v2.sol";
+
+// External Libraries
+import {SafeERC20} from "@oz/token/ERC20/utils/SafeERC20.sol";
+
+/**
+ * @title   Example Contract
+ *
+ * @notice  Brief description of contract functionality
+ *
+ * @custom:security-contact security@inverter.network
+ * @custom:version 2.0.0
+ * @author  Inverter Network
+ */
+abstract contract ExampleContract_v2 is Module_v2 {
+    using SafeERC20 for IERC20;
+
+    //===========================================================================
+    // Storage
+
+    //--------------------------------------------------------------------------
+    // Constants
+
+    uint public constant BPS = 10_000;
+
+    //--------------------------------------------------------------------------
+    // State Variables
+
+    IERC20 internal _token;
+    bool public _isOpen;
+
+    //--------------------------------------------------------------------------
+    // Storage Gap
+
+    uint[50] private __gap;
+
+    //===========================================================================
+    // Modifiers
+
+    modifier onlyWhenOpen() {
+        if (!_isOpen) revert FunctionalityClosed();
+        _;
+    }
+
+    //===========================================================================
+    // Public Functions - Getter Functions
+
+    //--------------------------------------------------------------------------
+    // Token Related Getters
+
+    function getToken() external view returns (address) {
+        return address(_token);
+    }
+
+    //--------------------------------------------------------------------------
+    // State Related Getters
+
+    function isOpen() external view returns (bool) {
+        return _isOpen;
+    }
+
+    //===========================================================================
+    // Public Functions - Mutating Functions
+
+    //--------------------------------------------------------------------------
+    // Processing Functions
+
+    function process(uint amount_) external permissioned onlyWhenOpen {
+        _processInternal(amount_);
+    }
+
+    //--------------------------------------------------------------------------
+    // Administrative Functions
+
+    function setOpen(bool isOpen_) external permissioned {
+        _isOpen = isOpen_;
+    }
+
+    //===========================================================================
+    // Internal Functions
+
+    //--------------------------------------------------------------------------
+    // Processing Logic
+
+    function _processInternal(uint amount_) internal virtual {
+        // Implementation
+    }
+
+    //--------------------------------------------------------------------------
+    // Validation Logic
+
+    function _validateAmount(uint amount_) internal pure {
+        if (amount_ == 0) revert InvalidAmount();
+    }
+}
+```
 
 ### Interface Structure
 
@@ -285,27 +387,93 @@ All contracts follow this order:
 8. **Errors**
 9. **Functions** (getter, then mutating, sorted by functionality)
 
-### Test Structure
+**Example Structure:**
 
-**Unit Tests**:
-1. **Licensing**: `// SPDX-License-Identifier: UNLICENSED`
-2. **Pragma**: `pragma solidity ^0.8.0;`
-3. **Imports** (Internal, External, Tests and Mocks, System under Testing)
-4. **Contract Overview Documentation**
-5. **Contract Declaration**
-6. **Constants**
-7. **State**
-8. **Setup**
-9. **Test Init**
-10. **Test Modifier**
-11. **Test External** (public + external)
-12. **Test Internal** (via exposed_ functions)
-13. **Helper Functions**
+```solidity
+// SPDX-License-Identifier: LGPL-3.0-only
+pragma solidity ^0.8.0;
 
-**Style Guidelines**:
-- Top headings distinguished by: `// =========================================`
-- Sub-headings by: `// -----------------------------------------`
-- Lines always 80 characters total (including padding)
+interface IExampleContract_v2 {
+    //==========================================================================
+    // Errors
+
+    //--------------------------------------------------------------------------
+    // Validation Errors
+
+    error Module__ExampleContract__InvalidAmount();
+    error Module__ExampleContract__InvalidReceiver();
+
+    //--------------------------------------------------------------------------
+    // State Errors
+
+    error Module__ExampleContract__FunctionalityClosed();
+    error Module__ExampleContract__AlreadyInitialized();
+
+    //==========================================================================
+    // Events
+
+    //--------------------------------------------------------------------------
+    // State Change Events
+
+    event FunctionalityEnabled();
+    event FunctionalityDisabled();
+
+    //--------------------------------------------------------------------------
+    // Operation Events
+
+    event AmountProcessed(address indexed user_, uint amount_);
+    event FeeUpdated(uint newFee_, uint oldFee_);
+
+    //==========================================================================
+    // Public Functions - Getter Functions
+
+    //--------------------------------------------------------------------------
+    // State Related Getters
+
+    /// @notice Returns whether functionality is open
+    /// @return isOpen_ True if open, false if closed
+    function isOpen() external view returns (bool isOpen_);
+
+    //--------------------------------------------------------------------------
+    // Configuration Getters
+
+    /// @notice Returns the current processing fee
+    /// @return fee_ The current fee in basis points
+    function getFee() external view returns (uint fee_);
+
+    /// @notice Returns the accepted token address
+    /// @return token_ The token address
+    function getToken() external view returns (address token_);
+
+    //==========================================================================
+    // Public Functions - Mutating Functions
+
+    //--------------------------------------------------------------------------
+    // Processing Functions
+
+    /// @notice Process amount for specified receiver
+    /// @param receiver_ Address to receive processed tokens
+    /// @param amount_ Amount to process
+    function processFor(address receiver_, uint amount_) external;
+
+    /// @notice Process amount for caller
+    /// @param amount_ Amount to process
+    function process(uint amount_) external;
+
+    //--------------------------------------------------------------------------
+    // Administrative Functions
+
+    /// @notice Opens the processing functionality
+    function openProcessing() external;
+
+    /// @notice Closes the processing functionality
+    function closeProcessing() external;
+
+    /// @notice Sets the processing fee
+    /// @param fee_ The fee in basis points
+    function setFee(uint fee_) external;
+}
+```
 
 ## 5. Contract Inheritance
 
