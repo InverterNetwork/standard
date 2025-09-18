@@ -5,6 +5,7 @@ Version 1.0.0-beta - Last Changed: 2024-12-06
 The Inverter Code Standard is a comprehensive set of guidelines for developing software within the Inverter Network. This standard aims to ensure consistent code quality, security, and maintainability across all projects. For now, it is focused on Solidity smart contracts, but will be expanded to cover all aspects of development in the future.
 
 
+
 ## Table of Contents
 1. [Introduction](#1-introduction)
    - [Purpose](#purpose)
@@ -15,6 +16,17 @@ The Inverter Code Standard is a comprehensive set of guidelines for developing s
    - [Code Quality](#code-quality)
    - [Security First](#security-first)
    - [Documentation Requirements](#documentation-requirements)
+
+3. [Naming Conventions](#3-naming-conventions)
+   - [Contracts](#contracts)
+   - [Functions](#functions)
+   - [Variables](#variables)
+   - [Files and Folders](#files-and-folders)
+
+4. [Code Layout](#4-code-layout)
+   - [Contract Structure](#contract-structure)
+   - [Interface Structure](#interface-structure)
+   - [Script Structure](#script-structure)
 
 3. [Naming Conventions](#3-naming-conventions)
    - [Contracts](#contracts)
@@ -87,6 +99,7 @@ While initially focused on Solidity smart contracts, these standards provide a f
    - Read through the entire document before starting development
    - Use as a reference during the development process
    - Follow checklists provided for each PR @todo ?
+   - Follow checklists provided for each PR @todo ?
 
 2. **For Reviewers**
    - Use as a baseline for code review criteria
@@ -98,12 +111,19 @@ While initially focused on Solidity smart contracts, these standards provide a f
    - Maintain consistency with these universal standards
 
 4. **Document Maintenance**
+3. **For Project Customization**
+   - Adapt universal principles to your specific project needs
+   - Maintain consistency with these universal standards
+
+4. **Document Maintenance**
    - Updates require team consensus
    - Suggestions for improvements are welcome through PRs
 
 5. **Enforcement**
+5. **Enforcement**
    - All code must comply with these standards
    - Deviations require explicit approval and documentation
+   - Automated tools will enforce applicable standards where possible
    - Automated tools will enforce applicable standards where possible
    - Regular code reviews will ensure continued compliance
 
@@ -137,12 +157,16 @@ While initially focused on Solidity smart contracts, these standards provide a f
 - **Security Requirements**
   - All contracts must pass automated security analysis (like Slither, Aderyn, etc.) @todo ?
   - External contract calls should be treated as potentially malicious @todo ?
+  - All contracts must pass automated security analysis (like Slither, Aderyn, etc.) @todo ?
+  - External contract calls should be treated as potentially malicious @todo ?
   - Implement robust access controls
   - Follow check-effects-interactions pattern
 
 - **Known Vulnerabilities**
   - Maintain awareness of common attack vectors @todo ?
+  - Maintain awareness of common attack vectors @todo ?
   - Regular security audits and reviews by external parties for any changes
+  - Keep updated on latest security developments @todo ?
   - Keep updated on latest security developments @todo ?
   - Document all security considerations, also within the code if applicable
 
@@ -248,9 +272,94 @@ All contracts follow this order:
 1. **Licensing**: `// SPDX-License-Identifier: LGPL-3.0-only`
 2. **Pragma**: `pragma solidity 0.8.23;` (contracts) or `pragma solidity ^0.8.0;` (interfaces)
 3. **Imports**:
+## 3. Naming Conventions
+
+### Contracts
+
+**Contract Files**
+- End with their major version: `ContractName_v1`
+- Use PascalCase for contract names
+- Example: `BountyManager_v1`
+
+**Test Files**
+- Copy contract name and add `.t.sol`: `BountyManager_v1.t.sol`
+- Test contracts add `_Test`: `BountyManager_v1_Test`
+
+**Mock Files**
+- Access mocks (for internal functions): `ContractName_v1_Exposed.sol`
+- Regular mocks: `ContractName_v1_Mock.sol`
+
+### Functions
+
+**Visibility Patterns**
+- Private & Internal functions start with `_`
+- Example: `_calculateFee()`
+
+**Getter Functions**
+- Boolean getters: `is<StateInTrueWay>()` - Example: `isOpen()`
+- General getters: `get<VariableName>()` - Example: `getFundingManager()`
+- Mapping getters: `get<Target>By<Parameter>()` - Example: `getBountyById()`
+
+**Modifiers**
+- Named as: `contextIsState()` - Example: `userIsAuthorized()`
+- Internal modifier functions: `_ensureContextIsState` - Example: `_ensureUserIsAuthorized()`
+
+### Variables
+
+**Parameters**
+- Always add `_` at the end: `user_`, `amount_`
+- Applies to functions, events, and errors
+
+**Return Values**
+- Always name return values: `returns (uint amount_)`
+- Always explicitly return, no implicit assignment
+- Example:
+  ```solidity
+  /// @param y_ this is the input
+  /// @return x_ this is returned
+  function example(uint y_) returns (uint x_) {
+      if(y_ > 2) {
+          x_ = 15;
+      } else {
+          x_ = 16;
+      }
+      return x_;
+  }
+  ```
+
+**State Variables**
+- Internal/Private start with `_`: `_emergencyState`
+- Everything internal by default unless good reason
+- Constants can be public (must be in interface)
+
+**Local Variables**
+- No underscores at start or end
+
+**Mappings**
+- Always name mapping parameters
+- Example: `mapping(uint id => Bounty bounty) internal _idToBounty`
+
+### Files and Folders
+
+**File Naming**
+- Files use PascalCase: `PaymentProcessor_v1.sol`
+- Folders use camelCase: `paymentProcessor/`
+- File names should match primary contract within
+- Interfaces prefixed with "I": `IPaymentProcessor_v1.sol`
+
+## 4. Code Layout
+
+### Contract Structure
+
+All contracts follow this order:
+
+1. **Licensing**: `// SPDX-License-Identifier: LGPL-3.0-only`
+2. **Pragma**: `pragma solidity 0.8.23;` (contracts) or `pragma solidity ^0.8.0;` (interfaces)
+3. **Imports**:
    ```solidity
    // External
    import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 
    // Internal
    import "./interfaces/IPaymentProcessor_v1.sol";
