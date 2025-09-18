@@ -4,6 +4,7 @@ Version 1.0.0-beta - Last Changed: 2024-12-06
 
 The Inverter Code Standard is a comprehensive set of guidelines for developing software within the Inverter Network. This standard aims to ensure consistent code quality, security, and maintainability across all projects. For now, it is focused on Solidity smart contracts, but will be expanded to cover all aspects of development in the future.
 
+
 ## Table of Contents
 1. [Introduction](#1-introduction)
    - [Purpose](#purpose)
@@ -14,34 +15,56 @@ The Inverter Code Standard is a comprehensive set of guidelines for developing s
    - [Code Quality](#code-quality)
    - [Security First](#security-first)
    - [Documentation Requirements](#documentation-requirements)
-   - Testing Requirements
 
-3. [Smart Contract Layout](#3-smart-contract-layout)
-   - [File Organization](#file-organization)
-     - [Directory Structure](#directory-structure)
-     - [File Naming](#file-naming)
-     - [File Structure](#file-structure)
+3. [Naming Conventions](#3-naming-conventions)
+   - [Contracts](#contracts)
+   - [Functions](#functions)
+   - [Variables](#variables)
+   - [Files and Folders](#files-and-folders)
 
-4. Smart Contract Guidelines
-
-5. [Smart Contract Testing](#5-smart-contract-testing)
-   - [Coverage Requirements](#coverage-requirements)
-   - [Test Types](#test-types)
-   - [Test Naming & Quality](#test-naming--quality)
+4. [Code Layout](#4-code-layout)
+   - [Contract Structure](#contract-structure)
+   - [Interface Structure](#interface-structure)
+   - [Script Structure](#script-structure)
    - [Test Structure](#test-structure)
 
-6. Documentation Standards
+5. [Contract Inheritance](#5-contract-inheritance)
+   - [Interface Inheritance](#interface-inheritance)
+   - [Initialization Patterns](#initialization-patterns)
 
-7. Git Standards
+6. [Documentation Standards](#6-documentation-standards)
+   - [NatSpec Requirements](#natspec-requirements)
+   - [Folder-based READMEs](#folder-based-readmes)
+   - [Code Comments](#code-comments)
 
-8. Development Process
+7. [Testing](#7-testing)
+   - [Test Types and Coverage](#test-types-and-coverage)
+   - [Gherkin Test Documentation](#gherkin-test-documentation)
+   - [Mock Usage](#mock-usage)
+   - [Test Naming Conventions](#test-naming-conventions)
 
-9. Tools and Environment
+8. [Git Standards](#8-git-standards)
+   - [Branch Strategy](#branch-strategy)
+   - [Commit Messages](#commit-messages)
+   - [Pull Request Process](#pull-request-process)
 
-10. Appendix
-    - Templates
-    - Checklists
-    - Reference Materials
+9. [CI/CD and Quality Assurance](#9-cicd-and-quality-assurance)
+   - [Contract Size Monitoring](#contract-size-monitoring)
+   - [Test Coverage Enforcement](#test-coverage-enforcement)
+   - [Automated Quality Gates](#automated-quality-gates)
+
+10. [Development Workflow](#10-development-workflow)
+    - [Development Notes](#development-notes)
+    - [Versioning](#versioning)
+    - [Deployment Guidelines](#deployment-guidelines)
+
+11. [Tools and Environment](#11-tools-and-environment)
+    - [Required Tools](#required-tools)
+    - [Configuration](#configuration)
+
+12. [Best Practices](#12-best-practices)
+    - [Contract Size Optimization](#contract-size-optimization)
+    - [Security Considerations](#security-considerations)
 
 ## 1. Introduction
 
@@ -67,23 +90,25 @@ While initially focused on Solidity smart contracts, these standards provide a f
 1. **For New Developers**
    - Read through the entire document before starting development
    - Use as a reference during the development process
-   - Follow checklists provided in the appendix for each PR
+   - Follow checklists provided for each PR @todo ?
 
 2. **For Reviewers**
    - Use as a baseline for code review criteria
    - Reference specific sections when providing feedback
    - Ensure all requirements are met before approval
 
-3. **Document Maintenance**
-   - Standards are reviewed quarterly
+3. **For Project Customization**
+   - Adapt universal principles to your specific project needs
+   - Maintain consistency with these universal standards
+
+4. **Document Maintenance**
    - Updates require team consensus
-   - All changes must be documented in a changelog and tied to a version number
    - Suggestions for improvements are welcome through PRs
 
-4. **Enforcement**
+5. **Enforcement**
    - All code must comply with these standards
    - Deviations require explicit approval and documentation
-   - Automated tools will enforce applicable standards in the future
+   - Automated tools will enforce applicable standards where possible
    - Regular code reviews will ensure continued compliance
 
 ## 2. General Principles
@@ -102,7 +127,6 @@ While initially focused on Solidity smart contracts, these standards provide a f
   - Limit function complexity and nesting
 
 - **Modularity**
-  - Separate concerns into distinct contracts/modules
   - Use inheritance and interfaces appropriately
   - Create reusable components when possible
   - Minimize dependencies between contracts
@@ -115,16 +139,15 @@ While initially focused on Solidity smart contracts, these standards provide a f
   - When in doubt, choose the more secure option
 
 - **Security Requirements**
-  - All contracts must pass automated security analysis (like Slither, Aderyn, etc.)
-  - External contract calls should be treated as potentially malicious
-  - State changes must be handled atomically
+  - All contracts must pass automated security analysis (like Slither, Aderyn, etc.) @todo ?
+  - External contract calls should be treated as potentially malicious @todo ?
   - Implement robust access controls
   - Follow check-effects-interactions pattern
 
 - **Known Vulnerabilities**
-  - Maintain awareness of common attack vectors
+  - Maintain awareness of common attack vectors @todo ?
   - Regular security audits and reviews by external parties for any changes
-  - Keep updated on latest security developments
+  - Keep updated on latest security developments @todo ?
   - Document all security considerations, also within the code if applicable
 
 ### Documentation Requirements
@@ -142,270 +165,529 @@ While initially focused on Solidity smart contracts, these standards provide a f
   - Troubleshooting guides
 
 - **Maintenance Documentation**
-  - Change logs for all updates
   - Known issues and workarounds
-  - Future improvement plans
   - Deprecation notices when applicable
 
-## 3. Smart Contract Standards
+## 3. Naming Conventions
 
-### File Organization
+### Contracts
 
-#### Directory Structure
-```
-src/
-├── peripheries/                # Contracts not directly included in workflows
-│   ├── governor/               # Governor contract
-│   ├── feeManager/             # Fee Manager contract
-│   ├── issuanceToken/          # ERC20 Issuance Token contract
-├── modules/                    # Workflow modules
-│   ├── authorizer/             # Authorizer module contracts
-│   ├── base/                   # Base contracts for module inheritance
-│   ├── fundingManager/         # Funding Manager module contracts
-│   ├── logicModule/            # Logic Module contracts
-│   ├── paymentProcessor/       # Payment Processor module contracts
-│   ├── libraries/              # Utility libraries
-├── orchestrator/               # Workflow orchestrator
-├── factories/                  # Workflow deployment factories
-├── proxies/                    # Beacons and proxies for workflow deployment
-├── experimental/               # Experimental contracts (unaudited, not for production use)
-```
+**Contract Files**
+- End with their major version: `ContractName_v1`
+- Use PascalCase for contract names
+- Example: `BountyManager_v1`
 
-#### File Naming
-- Files should be named using PascalCase, while folders are in camelCase
-  - Example: `src/modules/paymentProcessor/PaymentProcessor_v1.sol`
-    - Folder: `paymentProcessor` (camelCase)
-    - File: `PaymentProcessor_v1.sol` (PascalCase)
-- Name match the primary contract within the file
-  - Example: `PaymentProcessor_v1.sol` contains `PaymentProcessor_v1`
-  - Note: *The name contains the major version number of the contract (in this case v1.x.x) and remainds unchanged if the minor or patch versions change.*
-- Interface files are prefixed with "I"
-  - Example: `IPaymentProcessor_v1.sol`
-- Abstract contracts, also called base contracts, should have the "Base" suffix
-  - Example: `BondingCurveBase_v1.sol`
+**Test Files**
+- Copy contract name and add `.t.sol`: `BountyManager_v1.t.sol`
+- Test contracts add `_Test`: `BountyManager_v1_Test`
 
-#### File Structure
-1. **Licensing**
-   ```solidity
-   // SPDX-License-Identifier: LGPL-3.0-only
-   ```
+**Mock Files**
+- Access mocks (for internal functions): `ContractName_v1_Exposed.sol`
+- Regular mocks: `ContractName_v1_Mock.sol`
 
-2. **Pragma Statement**
-   - Use specific compiler versions. Contracts use version `0.8.23`, while interfaces use the general version `^0.8.0`.
-   ```solidity
-   // Contract compiler version 
-   pragma solidity 0.8.23;
+### Functions
 
-   // Interface compiler version
-   pragma solidity ^0.8.0;
-   ```
+**Visibility Patterns**
+- Private & Internal functions start with `_`
+- Example: `_calculateFee()`
 
-3. **Import Statements**
-   - Group imports by type: external and internal
+**Getter Functions**
+- Boolean getters: `is<StateInTrueWay>()` - Example: `isOpen()`
+- General getters: `get<VariableName>()` - Example: `getFundingManager()`
+- Mapping getters: `get<Target>By<Parameter>()` - Example: `getBountyById()`
+
+**Modifiers**
+- Named as: `contextIsState()` - Example: `userIsAuthorized()`
+- Internal modifier functions: `_ensureContextIsState` - Example: `_ensureUserIsAuthorized()`
+
+### Variables
+
+**Parameters**
+- Always add `_` at the end: `user_`, `amount_`
+- Applies to functions, events, and errors
+
+**Return Values**
+- Always name return values: `returns (uint amount_)`
+- Always explicitly return, no implicit assignment
+- Example:
+  ```solidity
+  /// @param y_ this is the input
+  /// @return x_ this is returned
+  function example(uint y_) returns (uint x_) {
+      if(y_ > 2) {
+          x_ = 15;
+      } else {
+          x_ = 16;
+      }
+      return x_;
+  }
+  ```
+
+**State Variables**
+- Internal/Private start with `_`: `_emergencyState`
+- Everything internal by default unless good reason
+- Constants can be public (must be in interface)
+
+**Local Variables**
+- No underscores at start or end
+
+**Mappings**
+- Always name mapping parameters
+- Example: `mapping(uint id => Bounty bounty) internal _idToBounty`
+
+### Files and Folders
+
+**File Naming**
+- Files use PascalCase: `PaymentProcessor_v1.sol`
+- Folders use camelCase: `paymentProcessor/`
+- File names should match primary contract within
+- Interfaces prefixed with "I": `IPaymentProcessor_v1.sol`
+
+## 4. Code Layout
+
+### Contract Structure
+
+All contracts follow this order:
+
+1. **Licensing**: `// SPDX-License-Identifier: LGPL-3.0-only`
+2. **Pragma**: `pragma solidity 0.8.23;` (contracts) or `pragma solidity ^0.8.0;` (interfaces)
+3. **Imports**:
    ```solidity
    // External
    import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-   
+
    // Internal
-   import "@pp/interfaces/IPaymentProcessor_v1.sol";
-   import "@periphery/feeManager/IFeeManager_v1.sol";
+   import "./interfaces/IPaymentProcessor_v1.sol";
    ```
-
-4. **Contract Overview Documentation**
-   - Each contract, interface and library have a NatSpec title, containing
-     - The name of the contract
-     - A description of the contracts functionality
-     - Additional information that a developer should know about
-     - A security notice
-     - The version number of the contract (i.e. v1.0.0)
-     - The version number of the Inverter Code Standard that was used to implement the contract (i.e. v1.0.0)
-     - The author of the contract
-
-   Example:
-   ```solidity
-   /**
-    * @title    Inverter Payment Processor
-    *
-    * @notice   Manages payment orders within a queue and executes payments according
-    *           to the configured logic module.
-    *
-    * @dev      This contract overrides the handler functions of the base contract to
-    *           limit users from withdrawing their funds prematurely.
-    *
-    * @custom:security-contact security@inverter.network
-    *                          In case of any concerns or findings, please refer
-    *                          to our Security Policy at security.inverter.network
-    *                          or email us directly!
-    *
-    * @custom:version   1.1.1
-    *
-    * @custom:standard-version  1.0.0
-    *
-    * @author   Inverter Network
-   */
-   ```
-
-5. **Contract Declaration**
-   - List inheritance from the highest to the lowest level of abstraction
-   ```solidity
-   contract RedeemingPaymentProcessor_v1 is 
-       ITokenRedeemer,
-       RedeemingPaymentProcessorBase_v1,
-       IPaymentProcessor_v1
-   {
-       // Contract implementation
-   }
-   ```
-
-6. **Library Usage**
-   ```solidity
-   using SafeERC20 for IERC20;
-   ```
-
-2. **ERC165 Interface Support**
-  - Implement the `supportsInterface()` function, listing all interfaces that the contract implements
-
-  Example:
-  ```solidity
-  function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override(
-            RedeemingPaymentProcessorBase_v1
-        )
-        returns (bool)
-    {
-        return interfaceId
-            == type(RedeemingPaymentProcessor_v1).interfaceId
-            || interfaceId == type(IPaymentProcessor_v1).interfaceId
-            || super.supportsInterface(interfaceId);
-    }
-  ```
-
+4. **Contract Overview Documentation** (see Documentation Standards)
+5. **Contract Declaration with Inheritance**
+6. **Using Libraries**: `using SafeERC20 for IERC20;`
+7. **ERC165 Interface Support**
 8. **Constants**
-   ```solidity
-   uint256 constant public MAX_DELAY = 30 days;
-   bytes32 constant public PROCESSOR_ROLE = keccak256("PROCESSOR_ROLE");
-   ```
-
 9. **Storage Variables**
-   ```solidity
-   // Immutables
-   address internal immutable _token;
-   
-   // State
-   mapping(address _user => UserInfo _info) internal _userInfo;
-   ProcessorState internal _state;
-   ```
-
 10. **Modifiers**
-    ```solidity
-    modifier userIsAuthorized(address _user) {
-        if (!_userInfo[_user].authorized)
-            revert Module__UserNotAuthorized(_user);
-        _;
-    }
-    ```
+11. **Constructor** (modules typically don't use constructors)
+12. **Initialization Functions**
+13. **Public Functions** (grouped by getter/mutating, sorted by functionality)
+14. **Internal Functions** (plain internal, then overridden)
 
-11. **Initialization & Constructor** 
-  - Note: *Contracts like modules do not implement a constructor as the base contracts already implement one.*
-    ```solidity
-    constructor() {
-        _disableInitializers();
-    }
+@todo Provide examples maybe in different folder and file?
 
-    function initialize(
-        address token_,
-        address admin_
-    ) external initializer {
-        __ModuleBase_init(admin_);
-        _token = token_;
-    }
-    ```
+### Interface Structure
 
-12. **Public Functions**
-    ```solidity
-    // Getters
-    function getProcessorState(uint id_) public virtual view returns (ProcessorState state_) {
-        // Implementation
-    }
-    
-    // Mutating functions
-    function processPayment(uint256 amount_) external virtual returns (uint256 paymentId_) {
-        // Implementation
-    }
-    ```
+1. **Licensing**: `// SPDX-License-Identifier: LGPL-3.0-only`
+2. **Pragma**: `pragma solidity ^0.8.0;`
+3. **Imports** (External, then Internal)
+4. **Contract Overview Documentation**
+5. **Interface Declaration with Inheritance**
+6. **Structs**
+7. **Events**
+8. **Errors**
+9. **Functions** (getter, then mutating, sorted by functionality)
 
-13. **Internal Functions**
-    ```solidity
-    // Regular internal functions
-    function _validatePayment(uint256 amount_) internal virtual {
-        // Implementation
-    }
-    
-    // Overridden internal functions
-    function _handlePaymentTokensAfterProcessing(uint256 amount_) internal virtual override {
-        // Implementation
-    }
-    ```
+### Test Structure
 
-## 5. Smart Contract Testing
-- **Coverage Requirements**
-  - Minimum 90% code coverage for all contracts
-  - 100% coverage for critical functions and contracts
-  - All state transitions must be tested
-  - Edge cases must be explicitly tested
+**Unit Tests**:
+1. **Licensing**: `// SPDX-License-Identifier: UNLICENSED`
+2. **Pragma**: `pragma solidity ^0.8.0;`
+3. **Imports** (Internal, External, Tests and Mocks, System under Testing)
+4. **Contract Overview Documentation**
+5. **Contract Declaration**
+6. **Constants**
+7. **State**
+8. **Setup**
+9. **Test Init**
+10. **Test Modifier**
+11. **Test External** (public + external)
+12. **Test Internal** (via exposed_ functions)
+13. **Helper Functions**
 
-- **Test Types**
-  - Unit tests for individual functions
-    - Cover the positive and negative paths
-    - Use fuzz testing where possible
-  - Integration tests for contract interactions
-    - If external protocols are used, they should be mocked for unit tests and tested via fork testing in integration tests
-  - Invariant testing will be introduced in the future and required for critical contracts first
+**Style Guidelines**:
+- Top headings distinguished by: `// =========================================`
+- Sub-headings by: `// -----------------------------------------`
+- Lines always 80 characters total (including padding)
 
-- **Test Naming & Quality**
-  - Tests must be readable and maintainable
-  - Each test should have a clear purpose
-  - Use Gherkin notation for test documentation and naming
-  
-  #### Gherkin Documentation
-  - All test files must start with Gherkin-style documentation that explicitly lists:
-    - The requirements of each function
-    - All possible execution paths
-    - Expected outcomes
-  
-  Example:
+## 5. Contract Inheritance
+
+### Interface Inheritance
+
+Interfaces should contain the same functions as the contract and inherit from any contract that the implementing contract inherits from.
+
+@todo Extend on this for more details
+
+**Example**:
+```solidity
+interface IComplexContract_v1 is IBaseContract_v1, IMiddleContract_v1 {
+    // IComplexContract_v1 specific functions
+}
+```
+
+### Initialization Patterns
+
+Each contract has an initialization function formatted as `__ContractName_Init()`, similar to OpenZeppelin.
+
+**Top-level contracts** have an `init()` function that calls all underlying init functions in order from lowest to highest level of inheritance.
+
+**Example**:
+```solidity
+function init(
+    IOrchestrator_v1 orchestrator_,
+    Metadata memory metadata,
+    bytes memory configData
+) external override(IModule_v1) initializer {
+    // Decode config data
+    (address issuanceToken, Properties memory props, address acceptedToken) =
+        abi.decode(configData, (address, Properties, address));
+
+    // Deepest level first - later levels may need previous levels data
+    __Module_v1_init(orchestrator_, metadata);
+    __BaseContract_v1_init();
+    __MiddleContract_v1_init();
+    __TopContract_v1_init();
+}
+```
+
+## 6. Documentation Standards
+
+### NatSpec Requirements
+
+**Contract Overview**:
+Every contract, interface, and library must have comprehensive NatSpec:
+
+```solidity
+/**
+ * @title    Contract Name
+ *
+ * @notice   Brief description of contract functionality
+ *
+ * @dev      Additional technical information for developers
+ *
+ * @custom:security-contact security@inverter.network
+ *                          In case of concerns, refer to our Security Policy
+ *                          at security.inverter.network or email directly!
+ *
+ * @custom:version   1.1.1
+ *
+ * @custom:standard-version  1.0.0
+ *
+ * @author   Inverter Network
+ */
+```
+
+**Function Documentation**:
+- All public/external functions must have NatSpec
+- Use `@inheritdoc` when functionality is identical to interface
+- Add explicit NatSpec when overriding or extending functionality
+- Internal functions should have NatSpec (contract-level since not in interface)
+
+@todo do mapping exampls
+
+**Examples**:
+```solidity
+/// @notice The amount of rewards generated up until now
+uint internal _reward;
+
+/// @notice Returns the reward amount
+/// @return amount_ The amount of rewards
+function getRewards() external returns (uint amount_)
+
+/// @notice Calculates rewards at this timestamp
+/// @dev Shouldn't be called by non-admin
+/// @param timestamp_ The current timestamp
+/// @return rewardAmount_ The amount of rewards at this moment
+function _calculateRewardAmount(uint timestamp_) internal returns (uint rewardAmount_)
+```
+
+**Line Length**: Keep to 80 characters max for comments and NatSpec.
+
+### Folder-based READMEs
+
+@todo this doesnt fit
+
+Add README files to important folders explaining contents and concepts. Structure them logically according to your project's architecture.
+
+**General Principles**:
+- Explain the purpose of each folder
+- Document relationships between contracts
+- Provide navigation guidance for developers
+- Must be updated when contracts are added, removed, or changed
+
+**Example Structure**:
+```
+docs/
+├── contracts/
+│   ├── core/
+│   │   ├── Contract1.md
+│   │   ├── Contract2.md
+│   │   └── README.md
+│   └── README.md
+└── README.md (links to each contract doc)
+```
+
+### Code Comments
+
+**Usage**:
+- Complex algorithms need detailed explanations
+- Security considerations must be explicitly documented
+- Include usage examples for complex functionality
+
+**When to Comment**:
+- Non-obvious business logic
+- Security-critical sections
+- Complex mathematical operations
+- Integration points with external contracts
+
+## 7. Testing
+
+### Test Types and Coverage
+
+**Coverage Requirements**:
+- Minimum 90% code coverage for all contracts
+- 100% coverage for critical functions
+- All state transitions must be tested
+- Edge cases explicitly tested
+
+**Test Types**:
+- **Unit Tests**: Individual function testing (positive/negative paths, fuzz testing)
+- **Integration Tests**: Contract interaction testing
+- **End-to-End Tests**: Full workflow testing
+
+### Gherkin Test Documentation
+
+All test files must start with Gherkin-style documentation:
+
+```solidity
+/* Test _processProtocolFeeViaMinting() function
+    ├── Given the fee amount > 0
+    │   └── And the treasury address is invalid
+    │       └── When the function _processProtocolFeeViaMinting() is called
+    │           └── Then the transaction should revert
+    │   └── And the treasury address is valid
+    │       └── When the function _processProtocolFeeViaMinting() is called
+    │           └── Then it should mint tokens to treasury
+    └── Given the fee amount = 0
+        └── When the function _processProtocolFeeViaMinting() is called
+            └── Then it should return without minting
+*/
+```
+
+### Mock Usage
+
+**Access Mocks**: For testing internal functions
+- Create `ContractName_v1_Exposed.sol`
+- Expose internal functions as `exposed_<functionName>()`
+- Example: `exposed_calculateFees()`
+
+**Regular Mocks**: For external dependencies
+- Use for non-system-under-test contracts
+- Always test against access mocks for the system under test
+- Test against regular mocks for external dependencies
+
+### Test Naming Conventions
+
+Follow Gherkin structure in camelCase:
+- Format: `test[Visibility][FunctionName]_[outcome]Given[condition]`
+- Examples:
+  - `testInternalProcessProtocolFeeViaMinting_failsGivenTreasuryAddressInvalid()`
+  - `testExternalDeposit_succeedsGivenValidAmountAndApprovedToken()`
+  - `testPublicWithdraw_revertsGivenInsufficientBalance()`
+
+**Structure Requirements**:
+- Each Gherkin path covered by at least one test
+- Tests organized in same order as Gherkin documentation
+- Group related tests together
+
+**Error and Event References**:
+```solidity
+// Events
+emit IContract_v1.Contract__EventName(param1, param2);
+
+// Errors
+vm.expectRevert(IContract_v1.Contract__ErrorName.selector);
+```
+
+## 8. Git Standards
+
+### Branch Strategy
+
+**Branch Structure**:
+- **Main Branch**: Production-ready, fully audited, contains mainnet deployments
+- **Dev Branch**: Latest changes, internally reviewed, testnet deployments
+- **Feature Branches**: Individual features, peer reviewed
+
+**Merge Requirements**:
+- Feature → Feature: 1 internal review
+- Feature → Dev: 2 internal reviews
+- Dev → Main: 2+ internal reviews (preferably different from previous reviewers)
+
+### Commit Messages
+
+For PRs reaching dev or main, use squashed commits with well-formatted messages:
+
+**Format**: `<Keyword>: <Short Description>`
+
+**Keywords**:
+- `Feat`: New feature added or extended
+- `Fix`: Bug fix or issue resolution
+- `Docs`: Documentation changes
+- `CI`: CI/CD pipeline changes
+- `Refactor`: Code refactoring
+- `Test`: Test changes
+- `Script`: Script changes
+- `Revert`: Reverting existing commit
+
+**Guidelines**:
+- Keep title to 72 characters or less
+- Use description for additional context if needed
+- Avoid including issue numbers, PR numbers, or inappropriate language
+
+### Pull Request Process
+
+**Required Elements**:
+- Tests/Changes to Tests
+- Scripts/Changes to Scripts
+- Updated Documentation
+
+**Review Process**:
+- PR maintainers may resolve comments for obvious fixes
+- Use GitHub "Suggestion" feature for simple changes
+- Tag reviewers for complex discussions
+- Don't squash commits until final approval
+
+## 9. CI/CD and Quality Assurance
+
+### Contract Size Monitoring @todo ?
+
+- **Hard Warning**: If over the size limit
+- **Warning**: If size reaches 90% of limit
+- Automated checking in CI pipeline
+
+### Test Coverage Enforcement
+
+- **Hard Limit**: 90% minimum coverage
+- **Warning**: If coverage decreases
+- Coverage reports generated automatically
+
+### Automated Quality Gates
+
+**Compiler Warnings**: Enforce 0 warnings
+
+**Documentation Checks**:
+- Detect missing NatSpec
+- Verify function documentation completeness
+- Check for version tag updates when functions change
+
+**Code Analysis**:
+- Run Slither for security analysis
+- Check naming convention compliance
+- Detect inline bookmarks (@todo, @note)
+- Interface version compatibility checks
+
+**Invariant Testing**: Should always run but not block merging
+
+## 10. Development Workflow
+
+### Development Notes
+
+**TODO Comments**:
+- `@todo`: For tasks still to be done
+- `@note`: Alternative expression for todos
+- Dev and main branches should not contain todos in contracts
+
+**Update Information**:
+- `@update-info`: Information for future developers updating code
+- Allowed in dev and main branches
+- Use for things to keep in mind during updates
+
+### Versioning
+
+**Contract Versioning**:
+- Add major version to contract name: `ContractName_v1`
+- Add version NatSpec when functions are added/updated:
   ```solidity
-  /* Test _processProtocolFeeViaMinting() function
-      ├── Given the fee amount > 0
-      │   └── And the treasury address is invalid
-      │       └── When the function _processProtocolFeeViaMinting() is called
-      │           └── Then the transaction should revert
-  */
+  /// @custom:version 1.1.0
   ```
+- Update in both function and contract title
 
-  #### Test Naming Convention
-  - Test names should follow the Gherkin structure in camelCase:
-    - Format: `test[Visibility][FunctionName]_[outcome]Given[condition]`
-    - Visibility: Internal/External/Public
-    - Outcome: succeeds/fails/reverts
-  
-  Examples:
-  ```solidity
-  // Basic test
-  testInternalProcessProtocolFeeViaMinting_failsGivenTreasuryAddressInvalid()
-  
-  // Multiple conditions
-  testExternalDeposit_succeedsGivenValidAmountAndApprovedToken()
-  
-  // State-dependent test
-  testPublicWithdraw_revertsGivenInsufficientBalance()
-  ```
+**Documentation Versioning**:
+- Update contract-level version when any function changes
+- Track when functions were added with `@custom:version`
 
-  #### Test Structure Requirements
-  - Each Gherkin path must be covered by at least one test
-  - Tests should be organized in the same order as the Gherkin documentation
-  - Complex functions may require multiple tests per path to cover edge cases
-  - Group related tests together using describe block
+### Deployment Guidelines
+
+**General Principles**:
+- All deployments should be deterministic and repeatable
+- Use consistent deployment scripts across environments
+- Maintain deployment documentation
+- Tag releases appropriately
+
+**Environment Separation**:
+- Clear distinction between testnet and mainnet deployments
+- Environment-specific configuration management
+- Proper testing before mainnet deployment
+
+## 11. Tools and Environment @todo Add more? / Move to top section?
+
+### Required Tools
+
+**Development Stack**:
+- **Foundry**: Primary development framework
+- **VSCode**: Recommended IDE with Solidity extensions
+- **Git**: Version control
+
+**Recommended Extensions**:
+- Inline Bookmarks (for @todo/@note tracking)
+- Solidity language support
+- GitLens for enhanced Git integration
+
+**AI Tooling** (Optional but Recommended):
+- Supermaven or similar for code completion
+
+### Configuration
+
+**VSCode Settings**: Repository should include `.vscode` folder with:
+- Recommended extensions
+- Workspace settings for consistent formatting
+- Debug configurations
+
+**Foundry Configuration**: Standardized `foundry.toml` settings
+
+## 12. Best Practices
+
+### Contract Size Optimization
+
+**Modifier Patterns**:
+```solidity
+modifier userIsAuthorized() {
+    _ensureUserIsAuthorized();
+    _;
+}
+
+function _ensureUserIsAuthorized() internal {
+    require(authorized, "User not authorized");
+}
+```
+
+**General Rules**:
+- Move reusable logic to libraries
+- Externalize repeated code fragments into functions (DRY principle)
+- Consider inlining functions called only once
+- Minimize buffer variables (balance with gas efficiency)
+- Use optimizer settings appropriately
+
+**Note**: Contract size optimization often conflicts with code readability - decide case-by-case.
+
+### Security Considerations
+
+**Virtual Functions**: All functions should be `virtual` for easy overriding in subsequent contracts
+
+**Access Control**: Use consistent patterns for authorization and authentication
+
+**External Calls**: Always treat external contract calls as potentially malicious
+
+**State Changes**: Handle atomically following check-effects-interactions pattern
+
+**Upgradability**: Consider upgrade patterns early in design
+
+---
+
