@@ -425,8 +425,8 @@ abstract contract ExampleContract_v2 is Module_v2 {
 4. **Contract Overview Documentation**
 5. **Interface Declaration with Inheritance**
 6. **Structs**
-7. **Events**
-8. **Errors**
+7. **Errors**
+8. **Events**
 9. **Functions** (getter, then mutating, sorted by functionality)
 
 **Example Structure:**
@@ -435,20 +435,56 @@ abstract contract ExampleContract_v2 is Module_v2 {
 // SPDX-License-Identifier: LGPL-3.0-only
 pragma solidity ^0.8.0;
 
+/**
+ * @title   IExampleContract_v2
+ *
+ * @notice  Interface for the Example contract's external API
+ *
+ * @custom:security-contact security@inverter.network
+ * @custom:version 2.0.0
+ * @author  Inverter Network
+ */
 interface IExampleContract_v2 {
+    // ========================================================================
+    // Structs
+
+    /// @notice The processing configuration properties.
+    /// @param  token  The token contract address used for processing.
+    /// @param  feeRate  The fee rate expressed in basis points.
+    /// @param  minAmount  The minimum amount required for processing.
+    /// @param  maxAmount  The maximum amount allowed for processing.
+    /// @param  processingIsOpen  The indicator used for enabling/disabling
+    ///         the processing functionalities.
+    /// @param  autoCompound  The indicator for automatic compounding of
+    ///         rewards.
+    struct ProcessingProperties {
+        address token;
+        uint feeRate;
+        uint minAmount;
+        uint maxAmount;
+        bool processingIsOpen;
+        bool autoCompound;
+    }
+
     // ========================================================================
     // Errors
 
     // ------------------------------------------------------------------------
     // Validation Errors
 
+    /// @notice Amount provided was invalid
     error Module__ExampleContract__InvalidAmount();
+
+    /// @notice Receiver address provided was invalid
     error Module__ExampleContract__InvalidReceiver();
 
     // ------------------------------------------------------------------------
     // State Errors
 
+    /// @notice Functionality is currently closed
     error Module__ExampleContract__FunctionalityClosed();
+
+    /// @notice Contract or module is already initialized
     error Module__ExampleContract__AlreadyInitialized();
 
     // ========================================================================
@@ -457,13 +493,23 @@ interface IExampleContract_v2 {
     // ------------------------------------------------------------------------
     // State Change Events
 
+    /// @notice Emitted when functionality is enabled
     event FunctionalityEnabled();
+
+    /// @notice Emitted when functionality is disabled
     event FunctionalityDisabled();
 
     // ------------------------------------------------------------------------
     // Operation Events
 
+    /// @notice Emitted when an amount is processed for a user
+    /// @param user_ Address that received the processed amount
+    /// @param amount_ Amount processed
     event AmountProcessed(address indexed user_, uint amount_);
+
+    /// @notice Emitted when the fee is updated
+    /// @param newFee_ New fee in basis points
+    /// @param oldFee_ Previous fee in basis points
     event FeeUpdated(uint newFee_, uint oldFee_);
 
     // ========================================================================
