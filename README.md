@@ -22,3 +22,8 @@ For projects with specific architectural patterns, additional guidelines are ava
 The Inverter Security Standard is a set of guidelines and best practices for building a secure software stack. It is designed to ensure that all code is written in a way that is secure and resistant to attack.
 
 You can find the security standard [here](./security/README.md).
+
+## AI Standard
+The Inverter AI Standard is a central reference for using artificial intelligence tools and techniques across the Inverter Network. It covers approved tools, reusable skills, acceptable use policies, and onboarding resources to ensure AI is adopted consistently and responsibly.
+
+You can find the AI standard [here](./ai/README.md).
