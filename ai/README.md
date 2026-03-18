@@ -45,3 +45,7 @@ Policies that govern how AI may and may not be used within the Inverter Network.
 New to AI at Inverter? Start here.
 
 - **[Getting Started](./onboarding/getting-started.md)**
+
+## Contributing
+
+Want to add a tool, skill, or section to this repo? Follow the **[Adding Content](./skills/contributing/adding-content.md)** guide.
