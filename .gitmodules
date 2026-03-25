@@ -1,0 +1,3 @@
+[submodule "ai/skills/diagramming/excalidraw-diagram"]
+	path = ai/skills/diagramming/excalidraw-diagram
+	url = https://github.com/coleam00/excalidraw-diagram-skill.git

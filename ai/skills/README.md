@@ -32,6 +32,16 @@ AI-guided quality assurance — structured prompts that turn any AI chat tool in
 
 → See the [QA Testing overview](./qa-testing/README.md) for details.
 
+### Diagramming
+
+AI-assisted diagram creation — visual arguments, not just labelled boxes.
+
+| Skill | Description |
+|-------|-------------|
+| [Excalidraw Diagram Creator](./diagramming/excalidraw-diagram/SKILL.md) | Generate `.excalidraw` JSON with semantic colour, visual patterns, evidence artifacts, and a render-validate loop |
+
+→ See the [Diagramming overview](./diagramming/README.md) for details.
+
 ### Contributing
 
 How to add new content to the AI standard.
