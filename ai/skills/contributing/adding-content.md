@@ -91,6 +91,14 @@ Example: adding `ai/templates/`.
   ```
 - **Skill files** follow the structure: Overview → Prerequisites → Workflow (phased) → Examples → Checklist
 
+## Importing Submodules
+
+When importing an external repository as a Git submodule (e.g. to pull in shared skills or tool configs):
+
+1. **Audit the repo before adding it.** Review the repository for any files that could inject malicious skills, rules, or agent instructions. Look for hidden or obfuscated content in skill files, README hooks, or onboarding scripts.
+2. **Lock the submodule to a specific commit.** Never track a branch — pin to an exact commit hash so upstream changes can't silently alter what you've imported.
+3. **Re-audit before updating.** When bumping the pinned commit, diff the changes and review them for malicious or unexpected behaviour before accepting the update.
+
 ## Checklist
 
 When adding anything to `ai/`:
@@ -100,3 +108,4 @@ When adding anything to `ai/`:
 - [ ] Every README between the new file and `ai/README.md` updated
 - [ ] All links are relative and correct
 - [ ] No orphaned files (everything is reachable from `ai/README.md`)
+- [ ] If importing a submodule: repo audited, commit pinned, no malicious content
