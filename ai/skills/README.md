@@ -21,6 +21,17 @@ Skills specific to Solidity smart contract development.
 
 → See the [Solidity Development overview](./solidity-development/README.md) for details.
 
+### QA Testing
+
+AI-guided quality assurance — structured prompts that turn any AI chat tool into a testing companion.
+
+| Skill | Description |
+|-------|-------------|
+| [Guided User Testing](./qa-testing/guided-user-testing.md) | Base prompt template — project-agnostic testing agent with configurable phases, roles, and issue templates |
+| [Floor Markets Phase 2](./qa-testing/floor-markets-phase-2.md) | Ready-to-use extension for Floor Markets Phase 2 testnet |
+
+→ See the [QA Testing overview](./qa-testing/README.md) for details.
+
 ### Contributing
 
 How to add new content to the AI standard.

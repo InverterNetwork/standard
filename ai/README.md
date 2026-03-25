@@ -32,6 +32,7 @@ Reusable prompt patterns and techniques organised by domain. Skills are concrete
 | Domain | Skills |
 |--------|--------|
 | Solidity Development | [Testing](./skills/solidity-development/testing/README.md) (skeleton · modifiers · internal functions · external functions · fuzz · e2e · invariant) · [Commit Messages](./skills/solidity-development/commit-messages.md) |
+| QA Testing | [Guided User Testing](./skills/qa-testing/guided-user-testing.md) (base template) · [Floor Markets Phase 2](./skills/qa-testing/floor-markets-phase-2.md) |
 | Contributing | [Adding Content](./skills/contributing/adding-content.md) |
 
 ## Rules
