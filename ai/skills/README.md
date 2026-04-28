@@ -42,6 +42,16 @@ AI-assisted diagram creation — visual arguments, not just labelled boxes.
 
 → See the [Diagramming overview](./diagramming/README.md) for details.
 
+### Workflows
+
+General agent workflows and methodologies that apply across domains. Distributed via the [Inverter Claude Code marketplace](../../.claude-plugin/marketplace.json).
+
+| Skill | Description |
+|-------|-------------|
+| [Superpowers](./workflows/superpowers.md) | Agentic skills framework — brainstorm → plan → TDD → review → finish |
+
+→ See the [Workflows overview](./workflows/README.md) for details.
+
 ### Contributing
 
 How to add new content to the AI standard.
