@@ -29,11 +29,14 @@ Reusable prompt patterns and techniques organised by domain. Skills are concrete
 
 → **[Skills Overview](./skills/README.md)**
 
+> **Using an AI agent?** See [`AGENTS.md`](../AGENTS.md) at the repo root for per-agent install commands for the recommended Inverter skill bundle (works with Claude Code, Cursor, Codex, OpenCode, Copilot, and Gemini). Claude Code users get an additional one-command shortcut via the curated [plugin marketplace](../.claude-plugin/marketplace.json).
+
 | Domain | Skills |
 |--------|--------|
 | Solidity Development | [Testing](./skills/solidity-development/testing/README.md) (skeleton · modifiers · internal functions · external functions · fuzz · e2e · invariant) · [Commit Messages](./skills/solidity-development/commit-messages.md) |
 | QA Testing | [Guided User Testing](./skills/qa-testing/guided-user-testing.md) (base template) · [Floor Markets Phase 2](./skills/qa-testing/floor-markets-phase-2.md) |
 | Diagramming | [Excalidraw Diagram Creator](./skills/diagramming/excalidraw-diagram/SKILL.md) |
+| Workflows | [Superpowers](./skills/workflows/superpowers.md) |
 | Contributing | [Adding Content](./skills/contributing/adding-content.md) |
 
 ## Rules
